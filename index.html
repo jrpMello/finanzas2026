@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Finanzas Personales</title>
+    <!-- Chart.js para el gráfico de categorías -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #f59e0b;
+            --border-color: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .col-12 { grid-column: span 12; }
+        .col-8 { grid-column: span 8; }
+        .col-6 { grid-column: span 6; }
+        .col-4 { grid-column: span 4; }
+
+        @media (max-width: 1024px) {
+            .col-8, .col-6, .col-4 { grid-column: span 12; }
+        }
+
+        .summary-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .summary-box .val {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .text-green { color: var(--accent-green); }
+        .text-red { color: var(--accent-red); }
+        .text-blue { color: var(--accent-blue); }
+        .text-amber { color: var(--accent-amber); }
+
+        .btn {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn:hover { opacity: 0.9; }
+        .btn-danger { background-color: var(--accent-red); }
+        .btn-secondary { background-color: var(--border-color); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        th { color: var(--text-muted); }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-top: 10px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 8px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .calendar-day {
+            background-color: var(--bg-card);
+            min-height: 90px;
+            padding: 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.1s ease, border-color 0.1s ease;
+            position: relative;
+        }
+
+        .calendar-day:hover {
+            border: 1px solid var(--accent-blue);
+        }
+
+        .calendar-day.today {
+            border: 2px solid var(--accent-amber);
+        }
+
+        .calendar-day .day-num {
+            font-weight: bold;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .calendar-item {
+            padding: 2px 4px;
+            border-radius: 2px;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .item-ingreso { background-color: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+        .item-gasto { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 4px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: var(--bg-secondary);
+            padding: 24px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid var(--border-color);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 6px;
+        }
+
+        .actions-cell button {
+            padding: 4px 8px;
+            font-size: 0.75rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            background-color: var(--bg-card);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>Control Financiero Personal</h1>
+            <span id="current-live-date" style="color: var(--text-muted); font-size: 0.85rem;"></span>
+        </div>
+        <div>
+            <button class="btn" onclick="openModal()">+ Nuevo Movimiento</button>
+        </div>
+    </header>
+
+    <div class="grid">
+        <!-- RESUMEN MENSUAL Y BALANCE -->
+        <div class="card col-4 summary-box">
+            <span>Ingresos del Mes</span>
+            <span class="val text-green" id="total-ingresos">0.00 €</span>
+        </div>
+        <div class="card col-4 summary-box">
+            <span>Gastos del Mes</span>
+            <span class="val text-red" id="total-gastos">0.00 €</span>
+        </div>
+        <div class="card col-4 summary-box">
+            <span>Balance Previsto</span>
+            <span class="val text-blue" id="total-balance">0.00 €</span>
+        </div>
+
+        <!-- GRÁFICO POR CATEGORÍAS -->
+        <div class="card col-6">
+            <h3>Distribución de Gastos por Categoría</h3>
+            <div class="chart-container">
+                <canvas id="chart-categorias"></canvas>
+            </div>
+        </div>
+
+        <!-- CONTROL DE DEUDAS Y FINANCIACIONES -->
+        <div class="card col-6">
+            <h3>Deudas y Fraccionamientos Pendientes</h3>
+            <table id="table-deudas">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Cuota</th>
+                        <th>Fin Previsto</th>
+                        <th>Cuotas Rest.</th>
+                        <th>Pendiente Total</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- PRÓXIMOS MOVIMIENTOS -->
+        <div class="card col-6">
+            <h3>Próximos Movimientos (Hoy)</h3>
+            <table id="table-hoy">
+                <thead>
+                    <tr><th>Concepto</th><th>Categoría</th><th>Tipo</th><th>Monto</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="card col-6">
+            <h3>Próximos Movimientos (Esta Semana)</h3>
+            <table id="table-semana">
+                <thead>
+                    <tr><th>Fecha</th><th>Concepto</th><th>Categoría</th><th>Monto</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- CALENDARIO -->
+        <div class="card col-12">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 id="cal-month-year">Calendario</h3>
+                <div>
+                    <button class="btn btn-secondary" onclick="goToday()">Hoy</button>
+                    <button class="btn btn-secondary" onclick="changeMonth(-1)">&lt;</button>
+                    <button class="btn btn-secondary" onclick="changeMonth(1)">&gt;</button>
+                </div>
+            </div>
+            <div class="calendar-grid" id="calendar-headers">
+                <div class="calendar-day-header">Lun</div>
+                <div class="calendar-day-header">Mar</div>
+                <div class="calendar-day-header">Mié</div>
+                <div class="calendar-day-header">Jue</div>
+                <div class="calendar-day-header">Vie</div>
+                <div class="calendar-day-header">Sáb</div>
+                <div class="calendar-day-header">Dom</div>
+            </div>
+            <div class="calendar-grid" id="calendar-body"></div>
+        </div>
+
+        <!-- LISTA GENERAL DE MOVIMIENTOS -->
+        <div class="card col-12">
+            <h3>Gestión de Movimientos Base</h3>
+            <table id="table-movimientos">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Categoría</th>
+                        <th>Tipo</th>
+                        <th>Monto</th>
+                        <th>Frecuencia</th>
+                        <th>Día/Inicio</th>
+                        <th>Fin</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODAL EDICION/CREACION -->
+    <div class="modal" id="modal-form">
+        <div class="modal-content">
+            <h3 id="modal-title" style="margin-bottom: 16px;">Nuevo Movimiento</h3>
+            <form id="form-movimiento" onsubmit="saveMovimiento(event)">
+                <input type="hidden" id="mov-id">
+                <div class="form-group">
+                    <label>Concepto</label>
+                    <input type="text" id="mov-concepto" required>
+                </div>
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <select id="mov-tipo" required onchange="handleTipoChange()">
+                        <option value="gasto">Gasto</option>
+                        <option value="ingreso">Ingreso</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select id="mov-categoria" required>
+                        <option value="Deuda">Deuda</option>
+                        <option value="Suscripción">Suscripción</option>
+                        <option value="Vivienda">Vivienda</option>
+                        <option value="Combustible">Combustible</option>
+                        <option value="Alimentacion">Alimentacion</option>
+                        <option value="Niños">Niños</option>
+                        <option value="Ocio">Ocio</option>
+                        <option value="Imprevisto">Imprevisto</option>
+                        <option value="Ingreso">Ingreso</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Monto (€)</label>
+                    <input type="number" step="0.01" id="mov-monto" required>
+                </div>
+                <div class="form-group">
+                    <label>Frecuencia de repetición</label>
+                    <select id="mov-frecuencia" required>
+                        <option value="puntual">Puntual</option>
+                        <option value="diario">Diario</option>
+                        <option value="semanal">Semanal</option>
+                        <option value="mensual">Mensual</option>
+                        <option value="bimestral">Bimestral</option>
+                        <option value="trimestral">Trimestral</option>
+                        <option value="cuatrimestral">Cuatrimestral</option>
+                        <option value="semestral">Semestral</option>
+                        <option value="anual">Anual</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Inicio / Día del mes</label>
+                    <input type="date" id="mov-fecha-inicio" required>
+                </div>
+                <div class="form-group">
+                    <label>Fecha Fin (Especial para calcular deudas restantes)</label>
+                    <input type="date" id="mov-fecha-fin">
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL ZOOM DÍA CALENDARIO -->
+    <div class="modal" id="modal-day-zoom">
+        <div class="modal-content">
+            <h3 id="zoom-date-title" style="margin-bottom: 16px;">Detalles del Día</h3>
+            <table id="table-day-zoom">
+                <thead>
+                    <tr><th>Concepto</th><th>Categoría</th><th>Tipo</th><th>Monto</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                <button type="button" class="btn btn-secondary" onclick="closeZoomModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'FINANZAS_APP_DATA_V2';
+
+        // Datos iniciales si no existen en localStorage
+        const defaultMovimientos = [
+            // Ingresos
+            { id: 1, concepto: "Sueldo Ricardo", categoria: "Ingreso", tipo: "ingreso", monto: 3000, frecuencia: "mensual", fechaInicio: "2026-10-05", fechaFin: null },
+            { id: 2, concepto: "Sueldo Mayra", categoria: "Ingreso", tipo: "ingreso", monto: 1400, frecuencia: "mensual", fechaInicio: "2026-10-30", fechaFin: null },
+            
+            // Gastos Mensuales
+            { id: 3, concepto: "Tarjeta Caixabank", categoria: "Deuda", tipo: "gasto", monto: 20, frecuencia: "mensual", fechaInicio: "2026-10-01", fechaFin: null },
+            { id: 4, concepto: "Tarjeta Santander", categoria: "Deuda", tipo: "gasto", monto: 100, frecuencia: "mensual", fechaInicio: "2026-10-01", fechaFin: null },
+            { id: 5, concepto: "Tarjeta Revolut", categoria: "Deuda", tipo: "gasto", monto: 100, frecuencia: "mensual", fechaInicio: "2026-10-01", fechaFin: null },
+            { id: 6, concepto: "Seguro Dental", categoria: "Suscripción", tipo: "gasto", monto: 18, frecuencia: "mensual", fechaInicio: "2026-10-01", fechaFin: null },
+            { id: 7, concepto: "Préstamo Cofidis", categoria: "Deuda", tipo: "gasto", monto: 24, frecuencia: "mensual", fechaInicio: "2026-10-02", fechaFin: null },
+            { id: 8, concepto: "Cofidis Muebles/Préstamo", categoria: "Deuda", tipo: "gasto", monto: 139, frecuencia: "mensual", fechaInicio: "2026-10-02", fechaFin: null },
+            { id: 9, concepto: "Tarjeta Plazo Mayra", categoria: "Deuda", tipo: "gasto", monto: 185, frecuencia: "mensual", fechaInicio: "2026-10-02", fechaFin: null },
+            { id: 10, concepto: "Tarjeta Plazo Ricardo", categoria: "Deuda", tipo: "gasto", monto: 185, frecuencia: "mensual", fechaInicio: "2026-10-02", fechaFin: null },
+            { id: 11, concepto: "Juzgado", categoria: "Deuda", tipo: "gasto", monto: 53, frecuencia: "mensual", fechaInicio: "2026-10-03", fechaFin: null },
+            { id: 12, concepto: "Paga Joana", categoria: "Niños", tipo: "gasto", monto: 50, frecuencia: "mensual", fechaInicio: "2026-10-05", fechaFin: null },
+            { id: 13, concepto: "Paga Enzo", categoria: "Niños", tipo: "gasto", monto: 30, frecuencia: "mensual", fechaInicio: "2026-10-05", fechaFin: null },
+            { id: 14, concepto: "Alquiler", categoria: "Vivienda", tipo: "gasto", monto: 710, frecuencia: "mensual", fechaInicio: "2026-10-07", fechaFin: null },
+            { id: 15, concepto: "Préstamo Revolut", categoria: "Deuda", tipo: "gasto", monto: 160, frecuencia: "mensual", fechaInicio: "2026-10-10", fechaFin: null },
+            { id: 16, concepto: "Coche", categoria: "Deuda", tipo: "gasto", monto: 203, frecuencia: "mensual", fechaInicio: "2026-10-10", fechaFin: null },
+            { id: 17, concepto: "Cuenta Revolut", categoria: "Suscripción", tipo: "gasto", monto: 4, frecuencia: "mensual", fechaInicio: "2026-10-20", fechaFin: null },
+            { id: 18, concepto: "Gasolina", categoria: "Combustible", tipo: "gasto", monto: 60, frecuencia: "mensual", fechaInicio: "2026-10-20", fechaFin: null },
+            { id: 19, concepto: "Orange", categoria: "Suscripción", tipo: "gasto", monto: 115, frecuencia: "mensual", fechaInicio: "2026-10-20", fechaFin: null },
+            { id: 20, concepto: "Factura Luz", categoria: "Vivienda", tipo: "gasto", monto: 65, frecuencia: "mensual", fechaInicio: "2026-10-25", fechaFin: null },
+            { id: 21, concepto: "Préstamo Santander", categoria: "Deuda", tipo: "gasto", monto: 295, frecuencia: "mensual", fechaInicio: "2026-10-30", fechaFin: null },
+
+            // Especiales
+            { id: 22, concepto: "Factura Agua", categoria: "Vivienda", tipo: "gasto", monto: 45, frecuencia: "trimestral", fechaInicio: "2026-12-05", fechaFin: null },
+            { id: 23, concepto: "Comedor Cole Enzo", categoria: "Niños", tipo: "gasto", monto: 90, frecuencia: "mensual", fechaInicio: "2026-10-05", fechaFin: "2027-01-31" },
+            { id: 24, concepto: "Factura Gas", categoria: "Vivienda", tipo: "gasto", monto: 100, frecuencia: "bimestral", fechaInicio: "2026-10-25", fechaFin: null },
+            { id: 25, concepto: "Mercado Semanal", categoria: "Alimentacion", tipo: "gasto", monto: 140, frecuencia: "semanal", fechaInicio: "2026-10-06", fechaFin: null }
+        ];
+
+        let movimientos = [];
+        let todayDate = new Date(); // En vivo, siempre la fecha real del sistema
+        let currentDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1);
+        let myChart = null;
+
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                movimientos = JSON.parse(saved);
+            } else {
+                movimientos = defaultMovimientos;
+                saveData();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(movimientos));
+        }
+
+        function initApp() {
+            todayDate = new Date(); // Recargar fecha del sistema en vivo
+            document.getElementById('current-live-date').innerText = `Hoy: ${todayDate.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+            
+            loadData();
+            renderSummaryAndCalendar();
+            renderTables();
+            renderDeudas();
+        }
+
+        function goToday() {
+            todayDate = new Date();
+            currentDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1);
+            renderSummaryAndCalendar();
+        }
+
+        function renderSummaryAndCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            document.getElementById('cal-month-year').innerText = new Date(year, month).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }).toUpperCase();
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            
+            let startingDay = firstDay.getDay() - 1;
+            if (startingDay === -1) startingDay = 6;
+
+            const calBody = document.getElementById('calendar-body');
+            calBody.innerHTML = '';
+
+            for (let i = 0; i < startingDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day';
+                emptyCell.style.opacity = '0.3';
+                calBody.appendChild(emptyCell);
+            }
+
+            let totalIngresos = 0;
+            let totalGastos = 0;
+            let catTotals = {};
+
+            const daysInMonth = lastDay.getDate();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateObj = new Date(year, month, day);
+
+                const dayCell = document.createElement('div');
+                const isToday = (dateObj.toDateString() === todayDate.toDateString());
+                dayCell.className = `calendar-day ${isToday ? 'today' : ''}`;
+                dayCell.innerHTML = `<div class="day-num">${day} ${isToday ? '<span>•</span>' : ''}</div>`;
+
+                const events = getEventsForDate(dateObj);
+                events.forEach(ev => {
+                    const item = document.createElement('div');
+                    item.className = `calendar-item item-${ev.tipo}`;
+                    item.innerText = `${ev.concepto}: ${ev.monto}€`;
+                    dayCell.appendChild(item);
+
+                    if (ev.tipo === 'ingreso') {
+                        totalIngresos += ev.monto;
+                    }
+                    if (ev.tipo === 'gasto') {
+                        totalGastos += ev.monto;
+                        catTotals[ev.categoria] = (catTotals[ev.categoria] || 0) + ev.monto;
+                    }
+                });
+
+                dayCell.onclick = () => openZoomModal(dateObj, events);
+
+                calBody.appendChild(dayCell);
+            }
+
+            document.getElementById('total-ingresos').innerText = totalIngresos.toFixed(2) + ' €';
+            document.getElementById('total-gastos').innerText = totalGastos.toFixed(2) + ' €';
+            const balance = totalIngresos - totalGastos;
+            const balanceEl = document.getElementById('total-balance');
+            balanceEl.innerText = balance.toFixed(2) + ' €';
+            balanceEl.className = `val ${balance >= 0 ? 'text-green' : 'text-red'}`;
+
+            renderChart(catTotals);
+        }
+
+        function renderChart(catTotals) {
+            const ctx = document.getElementById('chart-categorias').getContext('2d');
+            
+            const labels = Object.keys(catTotals);
+            const data = Object.values(catTotals);
+            const total = data.reduce((a, b) => a + b, 0);
+
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            if (labels.length === 0) {
+                return;
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#ef4444', '#3b82f6', '#10b981', '#f59e0b',
+                            '#8b5cf6', '#ec4899', '#6366f1', '#64748b'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right', labels: { color: '#f8fafc', font: { size: 10 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const val = context.raw;
+                                    const pct = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
+                                    return ` ${context.label}: ${val} € (${pct}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function getEventsForDate(date) {
+            let matches = [];
+            movimientos.forEach(m => {
+                const start = new Date(m.fechaInicio);
+                start.setHours(0,0,0,0);
+                const current = new Date(date);
+                current.setHours(0,0,0,0);
+
+                if (current < start) return;
+                if (m.fechaFin) {
+                    const end = new Date(m.fechaFin);
+                    end.setHours(23,59,59,999);
+                    if (current > end) return;
+                }
+
+                let match = false;
+                const diffTime = current - start;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+                switch(m.frecuencia) {
+                    case 'puntual':
+                        match = (diffDays === 0);
+                        break;
+                    case 'diario':
+                        match = true;
+                        break;
+                    case 'semanal':
+                        match = (diffDays % 7 === 0);
+                        break;
+                    case 'mensual':
+                        match = (current.getDate() === start.getDate());
+                        break;
+                    case 'bimestral':
+                        match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 2 === 0);
+                        break;
+                    case 'trimestral':
+                        match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 3 === 0);
+                        break;
+                    case 'cuatrimestral':
+                        match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 4 === 0);
+                        break;
+                    case 'semestral':
+                        match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 6 === 0);
+                        break;
+                    case 'anual':
+                        match = (current.getDate() === start.getDate()) && (current.getMonth() === start.getMonth());
+                        break;
+                }
+
+                if (match) matches.push(m);
+            });
+            return matches;
+        }
+
+        function getMonthDiff(d1, d2) {
+            let months = (d2.getFullYear() - d1.getFullYear()) * 12;
+            months -= d1.getMonth();
+            months += d2.getMonth();
+            return months <= 0 ? 0 : months;
+        }
+
+        function changeMonth(delta) {
+            currentDate.setMonth(currentDate.getMonth() + delta);
+            renderSummaryAndCalendar();
+        }
+
+        function renderDeudas() {
+            const tbody = document.querySelector('#table-deudas tbody');
+            tbody.innerHTML = '';
+
+            const deudas = movimientos.filter(m => m.categoria === 'Deuda');
+
+            if (deudas.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="color:var(--text-muted)">No hay deudas configuradas.</td></tr>';
+                return;
+            }
+
+            deudas.forEach(d => {
+                let cuotasRestantes = "Indefinido";
+                let totalPendiente = "Indefinido";
+
+                if (d.fechaFin) {
+                    const startCalc = new Date(todayDate > new Date(d.fechaInicio) ? todayDate : d.fechaInicio);
+                    const endCalc = new Date(d.fechaFin);
+                    
+                    if (endCalc > startCalc) {
+                        let count = 0;
+                        let temp = new Date(startCalc);
+                        while (temp <= endCalc) {
+                            if (getEventsForDate(temp).some(e => e.id === d.id)) {
+                                count++;
+                            }
+                            temp.setDate(temp.getDate() + 1);
+                        }
+                        cuotasRestantes = count;
+                        totalPendiente = (count * d.monto).toFixed(2) + ' €';
+                    } else {
+                        cuotasRestantes = 0;
+                        totalPendiente = '0.00 €';
+                    }
+                }
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${d.concepto}</strong></td>
+                        <td>${d.monto} €</td>
+                        <td>${d.fechaFin || '<span class="badge">Sin fecha fin</span>'}</td>
+                        <td>${cuotasRestantes}</td>
+                        <td class="text-amber"><strong>${totalPendiente}</strong></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderTables() {
+            // Render Tabla de Gestión Base
+            const tbody = document.querySelector('#table-movimientos tbody');
+            tbody.innerHTML = '';
+            movimientos.forEach(m => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${m.concepto}</td>
+                    <td><span class="badge">${m.categoria}</span></td>
+                    <td><span class="${m.tipo === 'ingreso' ? 'text-green' : 'text-red'}">${m.tipo.toUpperCase()}</span></td>
+                    <td>${m.monto} €</td>
+                    <td>${m.frecuencia}</td>
+                    <td>${m.fechaInicio}</td>
+                    <td>${m.fechaFin || 'Indefinido'}</td>
+                    <td class="actions-cell">
+                        <button class="btn btn-secondary" onclick="editMovimiento(${m.id})">Editar</button>
+                        <button class="btn btn-secondary" onclick="duplicateMovimiento(${m.id})">Duplicar</button>
+                        <button class="btn btn-danger" onclick="deleteMovimiento(${m.id})">X</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Próximos Movimientos Hoy
+            const hoyBody = document.querySelector('#table-hoy tbody');
+            hoyBody.innerHTML = '';
+            const hoyEvents = getEventsForDate(todayDate);
+            if(hoyEvents.length === 0) {
+                hoyBody.innerHTML = '<tr><td colspan="4" style="color:var(--text-muted)">Sin movimientos hoy</td></tr>';
+            } else {
+                hoyEvents.forEach(e => {
+                    hoyBody.innerHTML += `<tr><td>${e.concepto}</td><td><span class="badge">${e.categoria}</span></td><td>${e.tipo}</td><td>${e.monto}€</td></tr>`;
+                });
+            }
+
+            // Próximos Movimientos Semana
+            const semanaBody = document.querySelector('#table-semana tbody');
+            semanaBody.innerHTML = '';
+            for(let i = 0; i < 7; i++) {
+                let tempDate = new Date(todayDate);
+                tempDate.setDate(todayDate.getDate() + i);
+                let evs = getEventsForDate(tempDate);
+                evs.forEach(e => {
+                    semanaBody.innerHTML += `<tr><td>${tempDate.toLocaleDateString('es-ES', {weekday:'short', day:'numeric'})}</td><td>${e.concepto}</td><td><span class="badge">${e.categoria}</span></td><td>${e.monto}€</td></tr>`;
+                });
+            }
+        }
+
+        function openModal(editMode = false) {
+            if(!editMode) {
+                document.getElementById('form-movimiento').reset();
+                document.getElementById('mov-id').value = '';
+                document.getElementById('modal-title').innerText = 'Nuevo Movimiento';
+            }
+            document.getElementById('modal-form').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal-form').style.display = 'none';
+        }
+
+        function handleTipoChange() {
+            const tipo = document.getElementById('mov-tipo').value;
+            const catSelect = document.getElementById('mov-categoria');
+            if (tipo === 'ingreso') {
+                catSelect.value = 'Ingreso';
+            } else if (catSelect.value === 'Ingreso') {
+                catSelect.value = 'Deuda';
+            }
+        }
+
+        function saveMovimiento(e) {
+            e.preventDefault();
+            const id = document.getElementById('mov-id').value;
+            const nuevo = {
+                id: id ? parseInt(id) : Date.now(),
+                concepto: document.getElementById('mov-concepto').value,
+                tipo: document.getElementById('mov-tipo').value,
+                categoria: document.getElementById('mov-categoria').value,
+                monto: parseFloat(document.getElementById('mov-monto').value),
+                frecuencia: document.getElementById('mov-frecuencia').value,
+                fechaInicio: document.getElementById('mov-fecha-inicio').value,
+                fechaFin: document.getElementById('mov-fecha-fin').value || null
+            };
+
+            if (id) {
+                const idx = movimientos.findIndex(m => m.id === parseInt(id));
+                movimientos[idx] = nuevo;
+            } else {
+                movimientos.push(nuevo);
+            }
+
+            saveData();
+            closeModal();
+            initApp();
+        }
+
+        function editMovimiento(id) {
+            const m = movimientos.find(x => x.id === id);
+            if (!m) return;
+            document.getElementById('mov-id').value = m.id;
+            document.getElementById('mov-concepto').value = m.concepto;
+            document.getElementById('mov-tipo').value = m.tipo;
+            document.getElementById('mov-categoria').value = m.categoria || 'Deuda';
+            document.getElementById('mov-monto').value = m.monto;
+            document.getElementById('mov-frecuencia').value = m.frecuencia;
+            document.getElementById('mov-fecha-inicio').value = m.fechaInicio;
+            document.getElementById('mov-fecha-fin').value = m.fechaFin || '';
+            document.getElementById('modal-title').innerText = 'Editar Movimiento';
+            openModal(true);
+        }
+
+        function duplicateMovimiento(id) {
+            const m = movimientos.find(x => x.id === id);
+            if (!m) return;
+            const copia = { ...m, id: Date.now(), concepto: m.concepto + ' (Copia)' };
+            movimientos.push(copia);
+            saveData();
+            initApp();
+        }
+
+        function deleteMovimiento(id) {
+            movimientos = movimientos.filter(m => m.id !== id);
+            saveData();
+            initApp();
+        }
+
+        // ZOOM CALENDARIO
+        function openZoomModal(dateObj, events) {
+            document.getElementById('zoom-date-title').innerText = `Movimientos del ${dateObj.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}`;
+            const tbody = document.querySelector('#table-day-zoom tbody');
+            tbody.innerHTML = '';
+
+            if (events.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="color:var(--text-muted)">No hay movimientos registrados para este día.</td></tr>';
+            } else {
+                events.forEach(e => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${e.concepto}</strong></td>
+                            <td><span class="badge">${e.categoria}</span></td>
+                            <td><span class="${e.tipo === 'ingreso' ? 'text-green' : 'text-red'}">${e.tipo.toUpperCase()}</span></td>
+                            <td><strong>${e.monto} €</strong></td>
+                        </tr>
+                    `;
+                });
+            }
+
+            document.getElementById('modal-day-zoom').style.display = 'flex';
+        }
+
+        function closeZoomModal() {
+            document.getElementById('modal-day-zoom').style.display = 'none';
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
