@@ -31,34 +31,38 @@
         body {
             background-color: var(--bg-primary);
             color: var(--text-main);
-            padding: 20px;
+            padding: 16px;
             max-width: 1400px;
             margin: 0 auto;
+            overflow-x: hidden;
         }
 
         header {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--text-main);
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            gap: 20px;
+            gap: 16px;
         }
 
         .card {
             background-color: var(--bg-secondary);
             border-radius: 8px;
-            padding: 20px;
+            padding: 16px;
             border: 1px solid var(--border-color);
+            overflow: hidden;
         }
 
         .col-12 { grid-column: span 12; }
@@ -66,51 +70,67 @@
         .col-6 { grid-column: span 6; }
         .col-4 { grid-column: span 4; }
 
-        @media (max-width: 1024px) {
-            .col-8, .col-6, .col-4 { grid-column: span 12; }
+        @media (max-width: 768px) {
+            .col-12, .col-8, .col-6, .col-4 { grid-column: span 12; }
+            body { padding: 10px; }
+            .card { padding: 12px; }
+            header { flex-direction: column; align-items: stretch; }
+            header > div:last-child { display: flex; gap: 8px; width: 100%; }
+            header > div:last-child button { flex: 1; }
         }
 
         .summary-box {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .summary-box .val {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
+            word-break: break-word;
         }
 
         .text-green { color: var(--accent-green); }
         .text-red { color: var(--accent-red); }
         .text-blue { color: var(--accent-blue); }
         .text-amber { color: var(--accent-amber); }
+        .text-purple { color: var(--accent-purple); }
 
         .btn {
             background-color: var(--accent-blue);
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 4px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 0.9rem;
         }
 
         .btn:hover { opacity: 0.9; }
         .btn-danger { background-color: var(--accent-red); }
         .btn-secondary { background-color: var(--border-color); }
 
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+            min-width: 320px;
         }
 
         th, td {
             text-align: left;
-            padding: 10px;
+            padding: 8px 6px;
             border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            word-break: break-word;
         }
 
         th { color: var(--text-muted); }
@@ -118,28 +138,42 @@
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
+            gap: 3px;
             margin-top: 10px;
         }
 
         .calendar-day-header {
             text-align: center;
             font-weight: bold;
-            padding: 8px;
+            padding: 6px 2px;
             color: var(--text-muted);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
         .calendar-day {
             background-color: var(--bg-card);
-            min-height: 90px;
-            padding: 6px;
+            min-height: 75px;
+            padding: 4px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             overflow: hidden;
             cursor: pointer;
             transition: transform 0.1s ease, border-color 0.1s ease;
             position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .calendar-day { min-height: 55px; padding: 2px; font-size: 0.6rem; }
+            .calendar-item { display: none; } /* En iPhone muestra puntos o indicador simplificado para no saturar */
+            .calendar-day.has-events::after {
+                content: '';
+                display: block;
+                width: 6px;
+                height: 6px;
+                background-color: var(--accent-blue);
+                border-radius: 50%;
+                margin: 2px auto 0 auto;
+            }
         }
 
         .calendar-day:hover {
@@ -152,15 +186,15 @@
 
         .calendar-day .day-num {
             font-weight: bold;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
             display: flex;
             justify-content: space-between;
         }
 
         .calendar-item {
-            padding: 2px 4px;
+            padding: 1px 3px;
             border-radius: 2px;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -182,11 +216,12 @@
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
             color: var(--text-main);
             border-radius: 4px;
+            font-size: 1rem; /* Evita zoom automático en iOS al enfocar inputs */
         }
 
         .modal {
@@ -197,11 +232,12 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            padding: 16px;
         }
 
         .modal-content {
             background-color: var(--bg-secondary);
-            padding: 24px;
+            padding: 20px;
             border-radius: 8px;
             width: 100%;
             max-width: 500px;
@@ -212,27 +248,35 @@
 
         .actions-cell {
             display: flex;
-            gap: 6px;
+            gap: 4px;
+            flex-wrap: wrap;
         }
 
         .actions-cell button {
-            padding: 4px 8px;
-            font-size: 0.75rem;
+            padding: 4px 6px;
+            font-size: 0.7rem;
         }
 
         .chart-container {
             position: relative;
-            height: 250px;
+            height: 220px;
             width: 100%;
             display: flex;
             justify-content: center;
         }
 
         .badge {
-            padding: 2px 6px;
+            padding: 2px 5px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             background-color: var(--bg-card);
+            white-space: nowrap;
+        }
+
+        .sync-status {
+            font-size: 0.75rem;
+            color: var(--accent-green);
+            margin-top: 2px;
         }
     </style>
 </head>
@@ -242,14 +286,16 @@
         <div>
             <h1>Control Financiero Personal</h1>
             <span id="current-live-date" style="color: var(--text-muted); font-size: 0.85rem;"></span>
+            <div id="sync-status" class="sync-status">Modo Local</div>
         </div>
-        <div>
-            <button class="btn" onclick="openModal()">+ Nuevo Movimiento</button>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-secondary" onclick="openSyncModal()">⚙️ GitHub Sync</button>
+            <button class="btn" onclick="openModal()">+ Nuevo</button>
         </div>
     </header>
 
     <div class="grid">
-        <!-- RESUMEN MENSUAL Y BALANCE -->
+        <!-- RESUMEN MENSUAL Y BALANCE (TOTAL DEL MES) -->
         <div class="card col-4 summary-box">
             <span>Ingresos del Mes</span>
             <span class="val text-green" id="total-ingresos">0.00 €</span>
@@ -259,13 +305,27 @@
             <span class="val text-red" id="total-gastos">0.00 €</span>
         </div>
         <div class="card col-4 summary-box">
-            <span>Balance Previsto</span>
+            <span>Balance Previsto (Mes)</span>
             <span class="val text-blue" id="total-balance">0.00 €</span>
+        </div>
+
+        <!-- RESUMEN PROGRESIVO / ACTUAL -->
+        <div class="card col-4 summary-box" style="border-color: var(--accent-purple);">
+            <span style="color: var(--text-muted);">Balance Actual (Hasta Hoy)</span>
+            <span class="val" id="prog-balance-actual">0.00 €</span>
+        </div>
+        <div class="card col-4 summary-box" style="border-color: var(--accent-purple);">
+            <span style="color: var(--text-muted);">Gastos (Desde Hoy al Fin de Mes)</span>
+            <span class="val text-red" id="prog-gastos">0.00 €</span>
+        </div>
+        <div class="card col-4 summary-box" style="border-color: var(--accent-purple);">
+            <span style="color: var(--text-muted);">Balance (Desde Hoy al Fin de Mes)</span>
+            <span class="val text-purple" id="prog-balance">0.00 €</span>
         </div>
 
         <!-- GRÁFICO POR CATEGORÍAS -->
         <div class="card col-6">
-            <h3>Distribución de Gastos por Categoría</h3>
+            <h3>Distribución de Gastos</h3>
             <div class="chart-container">
                 <canvas id="chart-categorias"></canvas>
             </div>
@@ -273,50 +333,62 @@
 
         <!-- CONTROL DE DEUDAS Y FINANCIACIONES -->
         <div class="card col-6">
-            <h3>Deudas y Fraccionamientos Pendientes</h3>
-            <table id="table-deudas">
-                <thead>
-                    <tr>
-                        <th>Concepto</th>
-                        <th>Cuota</th>
-                        <th>Fin Previsto</th>
-                        <th>Cuotas Rest.</th>
-                        <th>Pendiente Total</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <h3>Deudas y Fraccionamientos</h3>
+            <div class="table-responsive">
+                <table id="table-deudas">
+                    <thead>
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Cuota</th>
+                            <th>Fin</th>
+                            <th>Rest.</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
 
         <!-- PRÓXIMOS MOVIMIENTOS -->
         <div class="card col-6">
-            <h3>Próximos Movimientos (Hoy)</h3>
-            <table id="table-hoy">
-                <thead>
-                    <tr><th>Concepto</th><th>Categoría</th><th>Tipo</th><th>Monto</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
+                <h3 id="title-hoy">Próximos (Hoy)</h3>
+                <span id="total-hoy-gastos" class="text-red" style="font-weight: bold; font-size: 0.85rem;"></span>
+            </div>
+            <div class="table-responsive">
+                <table id="table-hoy">
+                    <thead>
+                        <tr><th>Concepto</th><th>Categoría</th><th>Tipo</th><th>Monto</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
 
         <div class="card col-6">
-            <h3>Próximos Movimientos (Esta Semana)</h3>
-            <table id="table-semana">
-                <thead>
-                    <tr><th>Fecha</th><th>Concepto</th><th>Categoría</th><th>Monto</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
+                <h3 id="title-semana">Próximos (Esta Semana)</h3>
+                <span id="total-semana-gastos" class="text-red" style="font-weight: bold; font-size: 0.85rem;"></span>
+            </div>
+            <div class="table-responsive">
+                <table id="table-semana">
+                    <thead>
+                        <tr><th>Fecha</th><th>Concepto</th><th>Cat.</th><th>Monto</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
 
         <!-- CALENDARIO -->
         <div class="card col-12">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h3 id="cal-month-year">Calendario</h3>
-                <div>
-                    <button class="btn btn-secondary" onclick="goToday()">Hoy</button>
-                    <button class="btn btn-secondary" onclick="changeMonth(-1)">&lt;</button>
-                    <button class="btn btn-secondary" onclick="changeMonth(1)">&gt;</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <h3 id="cal-month-year" style="font-size: 1.1rem;">Calendario</h3>
+                <div style="display: flex; gap: 4px;">
+                    <button class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;" onclick="goToday()">Hoy</button>
+                    <button class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;" onclick="changeMonth(-1)">&lt;</button>
+                    <button class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;" onclick="changeMonth(1)">&gt;</button>
                 </div>
             </div>
             <div class="calendar-grid" id="calendar-headers">
@@ -334,21 +406,49 @@
         <!-- LISTA GENERAL DE MOVIMIENTOS -->
         <div class="card col-12">
             <h3>Gestión de Movimientos Base</h3>
-            <table id="table-movimientos">
-                <thead>
-                    <tr>
-                        <th>Concepto</th>
-                        <th>Categoría</th>
-                        <th>Tipo</th>
-                        <th>Monto</th>
-                        <th>Frecuencia</th>
-                        <th>Día/Inicio</th>
-                        <th>Fin</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="table-responsive">
+                <table id="table-movimientos">
+                    <thead>
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Categoría</th>
+                            <th>Tipo</th>
+                            <th>Monto</th>
+                            <th>Frecuencia</th>
+                            <th>Inicio</th>
+                            <th>Fin</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIGURACION GITHUB API -->
+    <div class="modal" id="modal-sync">
+        <div class="modal-content">
+            <h3>Sincronización con GitHub</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; line-height: 1.4;">
+                Introduce los datos de tu repositorio para sincronizar automáticamente los cambios entre dispositivos:
+            </p>
+            <div class="form-group" style="margin-top: 10px;">
+                <label>Usuario de GitHub</label>
+                <input type="text" id="gh-user" placeholder="Ej: tu-usuario">
+            </div>
+            <div class="form-group">
+                <label>Nombre del Repositorio</label>
+                <input type="text" id="gh-repo" placeholder="Ej: finanzas-personales">
+            </div>
+            <div class="form-group">
+                <label>Token de Acceso Personal (PAT)</label>
+                <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx">
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px;">
+                <button type="button" class="btn btn-secondary" onclick="closeSyncModal()">Cancelar</button>
+                <button type="button" class="btn" onclick="saveGitHubConfig()">Conectar</button>
+            </div>
         </div>
     </div>
 
@@ -420,13 +520,16 @@
     <!-- MODAL ZOOM DÍA CALENDARIO -->
     <div class="modal" id="modal-day-zoom">
         <div class="modal-content">
-            <h3 id="zoom-date-title" style="margin-bottom: 16px;">Detalles del Día</h3>
-            <table id="table-day-zoom">
-                <thead>
-                    <tr><th>Concepto</th><th>Categoría</th><th>Tipo</th><th>Monto</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <h3 id="zoom-date-title" style="margin-bottom: 16px; font-size: 1.1rem;">Detalles del Día</h3>
+            <div class="table-responsive">
+                <table id="table-day-zoom">
+                    <thead>
+                        <tr><th>Concepto</th><th>Cat.</th><th>Tipo</th><th>Monto</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div id="zoom-total-gastos" style="margin-top: 14px; font-weight: bold; text-align: right; font-size: 0.95rem;"></div>
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
                 <button type="button" class="btn btn-secondary" onclick="closeZoomModal()">Cerrar</button>
             </div>
@@ -434,15 +537,12 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'FINANZAS_APP_DATA_V2';
+        const STORAGE_KEY = 'FINANZAS_APP_DATA_V3';
+        const GH_CONFIG_KEY = 'FINANZAS_GH_CONFIG';
 
-        // Datos iniciales si no existen en localStorage
         const defaultMovimientos = [
-            // Ingresos
             { id: 1, concepto: "Sueldo Ricardo", categoria: "Ingreso", tipo: "ingreso", monto: 3000, frecuencia: "mensual", fechaInicio: "2026-10-05", fechaFin: null },
             { id: 2, concepto: "Sueldo Mayra", categoria: "Ingreso", tipo: "ingreso", monto: 1400, frecuencia: "mensual", fechaInicio: "2026-10-30", fechaFin: null },
-            
-            // Gastos Mensuales
             { id: 3, concepto: "Tarjeta Caixabank", categoria: "Deuda", tipo: "gasto", monto: 20, frecuencia: "mensual", fechaInicio: "2026-10-01", fechaFin: null },
             { id: 4, concepto: "Tarjeta Santander", categoria: "Deuda", tipo: "gasto", monto: 100, frecuencia: "mensual", fechaInicio: "2026-10-01", fechaFin: null },
             { id: 5, concepto: "Tarjeta Revolut", categoria: "Deuda", tipo: "gasto", monto: 100, frecuencia: "mensual", fechaInicio: "2026-10-01", fechaFin: null },
@@ -462,8 +562,6 @@
             { id: 19, concepto: "Orange", categoria: "Suscripción", tipo: "gasto", monto: 115, frecuencia: "mensual", fechaInicio: "2026-10-20", fechaFin: null },
             { id: 20, concepto: "Factura Luz", categoria: "Vivienda", tipo: "gasto", monto: 65, frecuencia: "mensual", fechaInicio: "2026-10-25", fechaFin: null },
             { id: 21, concepto: "Préstamo Santander", categoria: "Deuda", tipo: "gasto", monto: 295, frecuencia: "mensual", fechaInicio: "2026-10-30", fechaFin: null },
-
-            // Especiales
             { id: 22, concepto: "Factura Agua", categoria: "Vivienda", tipo: "gasto", monto: 45, frecuencia: "trimestral", fechaInicio: "2026-12-05", fechaFin: null },
             { id: 23, concepto: "Comedor Cole Enzo", categoria: "Niños", tipo: "gasto", monto: 90, frecuencia: "mensual", fechaInicio: "2026-10-05", fechaFin: "2027-01-31" },
             { id: 24, concepto: "Factura Gas", categoria: "Vivienda", tipo: "gasto", monto: 100, frecuencia: "bimestral", fechaInicio: "2026-10-25", fechaFin: null },
@@ -471,32 +569,88 @@
         ];
 
         let movimientos = [];
-        let todayDate = new Date(); // En vivo, siempre la fecha real del sistema
+        let todayDate = new Date();
         let currentDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1);
         let myChart = null;
 
-        function loadData() {
+        async function initApp() {
+            todayDate = new Date();
+            document.getElementById('current-live-date').innerText = `Hoy: ${todayDate.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+            
+            await loadData();
+            renderSummaryAndCalendar();
+            renderTables();
+            renderDeudas();
+        }
+
+        async function loadData() {
+            const configStr = localStorage.getItem(GH_CONFIG_KEY);
+            if (configStr) {
+                const config = JSON.parse(configStr);
+                try {
+                    const res = await fetch(`https://api.github.com/repos/${config.user}/${config.repo}/contents/data.json`, {
+                        headers: { 'Authorization': `token ${config.token}` }
+                    });
+                    if (res.ok) {
+                        const fileData = await res.json();
+                        const jsonString = decodeURIComponent(escape(atob(fileData.content)));
+                        movimientos = JSON.parse(jsonString);
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(movimientos));
+                        document.getElementById('sync-status').innerText = "Sincronizado con GitHub ✓";
+                        return;
+                    }
+                } catch (e) {
+                    console.warn("Error al descargar de GitHub, usando datos locales...", e);
+                }
+            }
+
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
                 movimientos = JSON.parse(saved);
             } else {
                 movimientos = defaultMovimientos;
-                saveData();
+                saveDataLocally();
             }
         }
 
-        function saveData() {
+        function saveDataLocally() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(movimientos));
         }
 
-        function initApp() {
-            todayDate = new Date(); // Recargar fecha del sistema en vivo
-            document.getElementById('current-live-date').innerText = `Hoy: ${todayDate.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
-            
-            loadData();
-            renderSummaryAndCalendar();
-            renderTables();
-            renderDeudas();
+        async function saveData() {
+            saveDataLocally();
+            const configStr = localStorage.getItem(GH_CONFIG_KEY);
+            if (configStr) {
+                const config = JSON.parse(configStr);
+                try {
+                    let sha = '';
+                    const getRes = await fetch(`https://api.github.com/repos/${config.user}/${config.repo}/contents/data.json`, {
+                        headers: { 'Authorization': `token ${config.token}` }
+                    });
+                    if (getRes.ok) {
+                        const fileInfo = await getRes.json();
+                        sha = fileInfo.sha;
+                    }
+
+                    const contentBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(movimientos, null, 2))));
+                    
+                    await fetch(`https://api.github.com/repos/${config.user}/${config.repo}/contents/data.json`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${config.token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: "Actualización automática de finanzas",
+                            content: contentBase64,
+                            sha: sha ? sha : undefined
+                        })
+                    });
+                    document.getElementById('sync-status').innerText = "Guardado y sincronizado en GitHub ✓";
+                } catch (e) {
+                    document.getElementById('sync-status').innerText = "Guardado local (Error al sincronizar con GitHub)";
+                }
+            }
         }
 
         function goToday() {
@@ -531,16 +685,25 @@
             let totalGastos = 0;
             let catTotals = {};
 
+            let pastBalanceActual = 0; 
+            let progGastosFuturos = 0; 
+
+            const isCurrentMonthActive = (todayDate.getFullYear() === year && todayDate.getMonth() === month);
+
             const daysInMonth = lastDay.getDate();
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateObj = new Date(year, month, day);
 
                 const dayCell = document.createElement('div');
                 const isToday = (dateObj.toDateString() === todayDate.toDateString());
-                dayCell.className = `calendar-day ${isToday ? 'today' : ''}`;
-                dayCell.innerHTML = `<div class="day-num">${day} ${isToday ? '<span>•</span>' : ''}</div>`;
-
                 const events = getEventsForDate(dateObj);
+                
+                dayCell.className = `calendar-day ${isToday ? 'today' : ''} ${events.length > 0 ? 'has-events' : ''}`;
+                dayCell.innerHTML = `<div class="day-num">${day} ${isToday ? '<span>•</span>' : ''}</div>`;
+                
+                let dayIngresos = 0;
+                let dayGastos = 0;
+
                 events.forEach(ev => {
                     const item = document.createElement('div');
                     item.className = `calendar-item item-${ev.tipo}`;
@@ -549,15 +712,30 @@
 
                     if (ev.tipo === 'ingreso') {
                         totalIngresos += ev.monto;
+                        dayIngresos += ev.monto;
                     }
                     if (ev.tipo === 'gasto') {
                         totalGastos += ev.monto;
+                        dayGastos += ev.monto;
                         catTotals[ev.categoria] = (catTotals[ev.categoria] || 0) + ev.monto;
                     }
                 });
 
-                dayCell.onclick = () => openZoomModal(dateObj, events);
+                if (!isCurrentMonthActive) {
+                    if (new Date(year, month, day) < new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate())) {
+                        pastBalanceActual += (dayIngresos - dayGastos);
+                    } else {
+                        progGastosFuturos += dayGastos;
+                    }
+                } else {
+                    if (day < todayDate.getDate()) {
+                        pastBalanceActual += (dayIngresos - dayGastos);
+                    } else if (day >= todayDate.getDate()) {
+                        progGastosFuturos += dayGastos;
+                    }
+                }
 
+                dayCell.onclick = () => openZoomModal(dateObj, events);
                 calBody.appendChild(dayCell);
             }
 
@@ -568,23 +746,28 @@
             balanceEl.innerText = balance.toFixed(2) + ' €';
             balanceEl.className = `val ${balance >= 0 ? 'text-green' : 'text-red'}`;
 
+            const balanceActualEl = document.getElementById('prog-balance-actual');
+            balanceActualEl.innerText = pastBalanceActual.toFixed(2) + ' €';
+            balanceActualEl.className = `val ${pastBalanceActual >= 0 ? 'text-green' : 'text-red'}`;
+
+            document.getElementById('prog-gastos').innerText = progGastosFuturos.toFixed(2) + ' €';
+
+            const progBalanceFuturo = pastBalanceActual - progGastosFuturos;
+            const progBalanceEl = document.getElementById('prog-balance');
+            progBalanceEl.innerText = progBalanceFuturo.toFixed(2) + ' €';
+            progBalanceEl.className = `val ${progBalanceFuturo >= 0 ? 'text-green' : 'text-red'}`;
+
             renderChart(catTotals);
         }
 
         function renderChart(catTotals) {
             const ctx = document.getElementById('chart-categorias').getContext('2d');
-            
             const labels = Object.keys(catTotals);
             const data = Object.values(catTotals);
             const total = data.reduce((a, b) => a + b, 0);
 
-            if (myChart) {
-                myChart.destroy();
-            }
-
-            if (labels.length === 0) {
-                return;
-            }
+            if (myChart) myChart.destroy();
+            if (labels.length === 0) return;
 
             myChart = new Chart(ctx, {
                 type: 'doughnut',
@@ -602,7 +785,7 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'right', labels: { color: '#f8fafc', font: { size: 10 } } },
+                        legend: { position: 'bottom', labels: { color: '#f8fafc', font: { size: 9 } } },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
@@ -637,35 +820,16 @@
                 const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
                 switch(m.frecuencia) {
-                    case 'puntual':
-                        match = (diffDays === 0);
-                        break;
-                    case 'diario':
-                        match = true;
-                        break;
-                    case 'semanal':
-                        match = (diffDays % 7 === 0);
-                        break;
-                    case 'mensual':
-                        match = (current.getDate() === start.getDate());
-                        break;
-                    case 'bimestral':
-                        match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 2 === 0);
-                        break;
-                    case 'trimestral':
-                        match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 3 === 0);
-                        break;
-                    case 'cuatrimestral':
-                        match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 4 === 0);
-                        break;
-                    case 'semestral':
-                        match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 6 === 0);
-                        break;
-                    case 'anual':
-                        match = (current.getDate() === start.getDate()) && (current.getMonth() === start.getMonth());
-                        break;
+                    case 'puntual': match = (diffDays === 0); break;
+                    case 'diario': match = true; break;
+                    case 'semanal': match = (diffDays % 7 === 0); break;
+                    case 'mensual': match = (current.getDate() === start.getDate()); break;
+                    case 'bimestral': match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 2 === 0); break;
+                    case 'trimestral': match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 3 === 0); break;
+                    case 'cuatrimestral': match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 4 === 0); break;
+                    case 'semestral': match = (current.getDate() === start.getDate()) && (getMonthDiff(start, current) % 6 === 0); break;
+                    case 'anual': match = (current.getDate() === start.getDate()) && (current.getMonth() === start.getMonth()); break;
                 }
-
                 if (match) matches.push(m);
             });
             return matches;
@@ -686,7 +850,6 @@
         function renderDeudas() {
             const tbody = document.querySelector('#table-deudas tbody');
             tbody.innerHTML = '';
-
             const deudas = movimientos.filter(m => m.categoria === 'Deuda');
 
             if (deudas.length === 0) {
@@ -695,8 +858,8 @@
             }
 
             deudas.forEach(d => {
-                let cuotasRestantes = "Indefinido";
-                let totalPendiente = "Indefinido";
+                let cuotasRestantes = "Indef.";
+                let totalPendiente = "Indef.";
 
                 if (d.fechaFin) {
                     const startCalc = new Date(todayDate > new Date(d.fechaInicio) ? todayDate : d.fechaInicio);
@@ -706,9 +869,7 @@
                         let count = 0;
                         let temp = new Date(startCalc);
                         while (temp <= endCalc) {
-                            if (getEventsForDate(temp).some(e => e.id === d.id)) {
-                                count++;
-                            }
+                            if (getEventsForDate(temp).some(e => e.id === d.id)) count++;
                             temp.setDate(temp.getDate() + 1);
                         }
                         cuotasRestantes = count;
@@ -723,7 +884,7 @@
                     <tr>
                         <td><strong>${d.concepto}</strong></td>
                         <td>${d.monto} €</td>
-                        <td>${d.fechaFin || '<span class="badge">Sin fecha fin</span>'}</td>
+                        <td>${d.fechaFin || 'N/A'}</td>
                         <td>${cuotasRestantes}</td>
                         <td class="text-amber"><strong>${totalPendiente}</strong></td>
                     </tr>
@@ -732,7 +893,6 @@
         }
 
         function renderTables() {
-            // Render Tabla de Gestión Base
             const tbody = document.querySelector('#table-movimientos tbody');
             tbody.innerHTML = '';
             movimientos.forEach(m => {
@@ -744,10 +904,10 @@
                     <td>${m.monto} €</td>
                     <td>${m.frecuencia}</td>
                     <td>${m.fechaInicio}</td>
-                    <td>${m.fechaFin || 'Indefinido'}</td>
+                    <td>${m.fechaFin || 'N/A'}</td>
                     <td class="actions-cell">
-                        <button class="btn btn-secondary" onclick="editMovimiento(${m.id})">Editar</button>
-                        <button class="btn btn-secondary" onclick="duplicateMovimiento(${m.id})">Duplicar</button>
+                        <button class="btn btn-secondary" onclick="editMovimiento(${m.id})">Edit</button>
+                        <button class="btn btn-secondary" onclick="duplicateMovimiento(${m.id})">Dup</button>
                         <button class="btn btn-danger" onclick="deleteMovimiento(${m.id})">X</button>
                     </td>
                 `;
@@ -758,25 +918,43 @@
             const hoyBody = document.querySelector('#table-hoy tbody');
             hoyBody.innerHTML = '';
             const hoyEvents = getEventsForDate(todayDate);
+            let totalHoyGastos = 0;
+
             if(hoyEvents.length === 0) {
                 hoyBody.innerHTML = '<tr><td colspan="4" style="color:var(--text-muted)">Sin movimientos hoy</td></tr>';
             } else {
                 hoyEvents.forEach(e => {
+                    if (e.tipo === 'gasto') {
+                        totalHoyGastos += e.monto;
+                    }
                     hoyBody.innerHTML += `<tr><td>${e.concepto}</td><td><span class="badge">${e.categoria}</span></td><td>${e.tipo}</td><td>${e.monto}€</td></tr>`;
                 });
             }
+            document.getElementById('total-hoy-gastos').innerText = totalHoyGastos > 0 ? `Gastos: ${totalHoyGastos.toFixed(2)} €` : '';
 
             // Próximos Movimientos Semana
             const semanaBody = document.querySelector('#table-semana tbody');
             semanaBody.innerHTML = '';
+            let totalSemanaGastos = 0;
+            let hasSemanaEvents = false;
+
             for(let i = 0; i < 7; i++) {
                 let tempDate = new Date(todayDate);
                 tempDate.setDate(todayDate.getDate() + i);
                 let evs = getEventsForDate(tempDate);
                 evs.forEach(e => {
+                    hasSemanaEvents = true;
+                    if (e.tipo === 'gasto') {
+                        totalSemanaGastos += e.monto;
+                    }
                     semanaBody.innerHTML += `<tr><td>${tempDate.toLocaleDateString('es-ES', {weekday:'short', day:'numeric'})}</td><td>${e.concepto}</td><td><span class="badge">${e.categoria}</span></td><td>${e.monto}€</td></tr>`;
                 });
             }
+
+            if (!hasSemanaEvents) {
+                semanaBody.innerHTML = '<tr><td colspan="4" style="color:var(--text-muted)">Sin movimientos esta semana</td></tr>';
+            }
+            document.getElementById('total-semana-gastos').innerText = totalSemanaGastos > 0 ? `Gastos: ${totalSemanaGastos.toFixed(2)} €` : '';
         }
 
         function openModal(editMode = false) {
@@ -788,21 +966,42 @@
             document.getElementById('modal-form').style.display = 'flex';
         }
 
-        function closeModal() {
-            document.getElementById('modal-form').style.display = 'none';
+        function closeModal() { document.getElementById('modal-form').style.display = 'none'; }
+        
+        function openSyncModal() {
+            const config = JSON.parse(localStorage.getItem(GH_CONFIG_KEY) || '{}');
+            document.getElementById('gh-user').value = config.user || '';
+            document.getElementById('gh-repo').value = config.repo || '';
+            document.getElementById('gh-token').value = config.token || '';
+            document.getElementById('modal-sync').style.display = 'flex';
+        }
+        function closeSyncModal() { document.getElementById('modal-sync').style.display = 'none'; }
+
+        async function saveGitHubConfig() {
+            const user = document.getElementById('gh-user').value.trim();
+            const repo = document.getElementById('gh-repo').value.trim();
+            const token = document.getElementById('gh-token').value.trim();
+
+            if (!user || !repo || !token) {
+                alert("Por favor, rellena todos los campos.");
+                return;
+            }
+
+            const config = { user, repo, token };
+            localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(config));
+            closeSyncModal();
+            await initApp();
+            alert("¡Conectado correctamente con GitHub!");
         }
 
         function handleTipoChange() {
             const tipo = document.getElementById('mov-tipo').value;
             const catSelect = document.getElementById('mov-categoria');
-            if (tipo === 'ingreso') {
-                catSelect.value = 'Ingreso';
-            } else if (catSelect.value === 'Ingreso') {
-                catSelect.value = 'Deuda';
-            }
+            if (tipo === 'ingreso') catSelect.value = 'Ingreso';
+            else if (catSelect.value === 'Ingreso') catSelect.value = 'Deuda';
         }
 
-        function saveMovimiento(e) {
+        async function saveMovimiento(e) {
             e.preventDefault();
             const id = document.getElementById('mov-id').value;
             const nuevo = {
@@ -823,12 +1022,14 @@
                 movimientos.push(nuevo);
             }
 
-            saveData();
+            await saveData();
             closeModal();
-            initApp();
+            renderSummaryAndCalendar();
+            renderTables();
+            renderDeudas();
         }
 
-        function editMovimiento(id) {
+        async function editMovimiento(id) {
             const m = movimientos.find(x => x.id === id);
             if (!m) return;
             document.getElementById('mov-id').value = m.id;
@@ -843,31 +1044,39 @@
             openModal(true);
         }
 
-        function duplicateMovimiento(id) {
+        async function duplicateMovimiento(id) {
             const m = movimientos.find(x => x.id === id);
             if (!m) return;
             const copia = { ...m, id: Date.now(), concepto: m.concepto + ' (Copia)' };
             movimientos.push(copia);
-            saveData();
-            initApp();
+            await saveData();
+            renderSummaryAndCalendar();
+            renderTables();
+            renderDeudas();
         }
 
-        function deleteMovimiento(id) {
+        async function deleteMovimiento(id) {
             movimientos = movimientos.filter(m => m.id !== id);
-            saveData();
-            initApp();
+            await saveData();
+            renderSummaryAndCalendar();
+            renderTables();
+            renderDeudas();
         }
 
-        // ZOOM CALENDARIO
         function openZoomModal(dateObj, events) {
             document.getElementById('zoom-date-title').innerText = `Movimientos del ${dateObj.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}`;
             const tbody = document.querySelector('#table-day-zoom tbody');
             tbody.innerHTML = '';
 
+            let totalZoomGastos = 0;
+
             if (events.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="4" style="color:var(--text-muted)">No hay movimientos registrados para este día.</td></tr>';
             } else {
                 events.forEach(e => {
+                    if (e.tipo === 'gasto') {
+                        totalZoomGastos += e.monto;
+                    }
                     tbody.innerHTML += `
                         <tr>
                             <td><strong>${e.concepto}</strong></td>
@@ -879,12 +1088,17 @@
                 });
             }
 
+            const totalGastosEl = document.getElementById('zoom-total-gastos');
+            if (totalZoomGastos > 0) {
+                totalGastosEl.innerHTML = `Total Gastos del Día: <span class="text-red">${totalZoomGastos.toFixed(2)} €</span>`;
+            } else {
+                totalGastosEl.innerHTML = '';
+            }
+
             document.getElementById('modal-day-zoom').style.display = 'flex';
         }
 
-        function closeZoomModal() {
-            document.getElementById('modal-day-zoom').style.display = 'none';
-        }
+        function closeZoomModal() { document.getElementById('modal-day-zoom').style.display = 'none'; }
 
         window.onload = initApp;
     </script>
