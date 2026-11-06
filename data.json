@@ -1,0 +1,252 @@
+[
+  {
+    "id": 1,
+    "concepto": "Sueldo Ricardo",
+    "categoria": "Ingreso",
+    "tipo": "ingreso",
+    "monto": 3000,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-05",
+    "fechaFin": null
+  },
+  {
+    "id": 2,
+    "concepto": "Sueldo Mayra",
+    "tipo": "ingreso",
+    "categoria": "Ingreso",
+    "monto": 1400,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-11-01",
+    "fechaFin": null
+  },
+  {
+    "id": 3,
+    "concepto": "Tarjeta Caixabank",
+    "categoria": "Deuda",
+    "tipo": "gasto",
+    "monto": 20,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-01",
+    "fechaFin": null
+  },
+  {
+    "id": 4,
+    "concepto": "Tarjeta Santander",
+    "categoria": "Deuda",
+    "tipo": "gasto",
+    "monto": 100,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-01",
+    "fechaFin": null
+  },
+  {
+    "id": 5,
+    "concepto": "Tarjeta Revolut",
+    "categoria": "Deuda",
+    "tipo": "gasto",
+    "monto": 100,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-01",
+    "fechaFin": null
+  },
+  {
+    "id": 6,
+    "concepto": "Seguro Dental",
+    "categoria": "Suscripción",
+    "tipo": "gasto",
+    "monto": 18,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-01",
+    "fechaFin": null
+  },
+  {
+    "id": 7,
+    "concepto": "Préstamo Cofidis",
+    "categoria": "Deuda",
+    "tipo": "gasto",
+    "monto": 24,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-02",
+    "fechaFin": null
+  },
+  {
+    "id": 8,
+    "concepto": "Cofidis Muebles/Préstamo",
+    "categoria": "Deuda",
+    "tipo": "gasto",
+    "monto": 139,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-02",
+    "fechaFin": null
+  },
+  {
+    "id": 9,
+    "concepto": "Tarjeta Plazo Mayra",
+    "categoria": "Deuda",
+    "tipo": "gasto",
+    "monto": 185,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-02",
+    "fechaFin": null
+  },
+  {
+    "id": 10,
+    "concepto": "Tarjeta Plazo Ricardo",
+    "categoria": "Deuda",
+    "tipo": "gasto",
+    "monto": 185,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-02",
+    "fechaFin": null
+  },
+  {
+    "id": 11,
+    "concepto": "Juzgado",
+    "categoria": "Deuda",
+    "tipo": "gasto",
+    "monto": 53,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-03",
+    "fechaFin": null
+  },
+  {
+    "id": 12,
+    "concepto": "Paga Joana",
+    "categoria": "Niños",
+    "tipo": "gasto",
+    "monto": 50,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-05",
+    "fechaFin": null
+  },
+  {
+    "id": 13,
+    "concepto": "Paga Enzo",
+    "categoria": "Niños",
+    "tipo": "gasto",
+    "monto": 30,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-05",
+    "fechaFin": null
+  },
+  {
+    "id": 14,
+    "concepto": "Alquiler",
+    "categoria": "Vivienda",
+    "tipo": "gasto",
+    "monto": 710,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-07",
+    "fechaFin": null
+  },
+  {
+    "id": 15,
+    "concepto": "Préstamo Revolut",
+    "categoria": "Deuda",
+    "tipo": "gasto",
+    "monto": 160,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-10",
+    "fechaFin": null
+  },
+  {
+    "id": 16,
+    "concepto": "Coche",
+    "categoria": "Deuda",
+    "tipo": "gasto",
+    "monto": 203,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-10",
+    "fechaFin": null
+  },
+  {
+    "id": 17,
+    "concepto": "Cuenta Revolut",
+    "categoria": "Suscripción",
+    "tipo": "gasto",
+    "monto": 4,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-20",
+    "fechaFin": null
+  },
+  {
+    "id": 18,
+    "concepto": "Gasolina",
+    "categoria": "Combustible",
+    "tipo": "gasto",
+    "monto": 60,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-20",
+    "fechaFin": null
+  },
+  {
+    "id": 19,
+    "concepto": "Orange",
+    "categoria": "Suscripción",
+    "tipo": "gasto",
+    "monto": 115,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-20",
+    "fechaFin": null
+  },
+  {
+    "id": 20,
+    "concepto": "Factura Luz",
+    "categoria": "Vivienda",
+    "tipo": "gasto",
+    "monto": 65,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-25",
+    "fechaFin": null
+  },
+  {
+    "id": 21,
+    "concepto": "Préstamo Santander",
+    "categoria": "Deuda",
+    "tipo": "gasto",
+    "monto": 295,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-30",
+    "fechaFin": null
+  },
+  {
+    "id": 22,
+    "concepto": "Factura Agua",
+    "categoria": "Vivienda",
+    "tipo": "gasto",
+    "monto": 45,
+    "frecuencia": "trimestral",
+    "fechaInicio": "2026-12-05",
+    "fechaFin": null
+  },
+  {
+    "id": 23,
+    "concepto": "Comedor Cole Enzo",
+    "categoria": "Niños",
+    "tipo": "gasto",
+    "monto": 90,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-10-05",
+    "fechaFin": "2027-01-31"
+  },
+  {
+    "id": 24,
+    "concepto": "Factura Gas",
+    "categoria": "Vivienda",
+    "tipo": "gasto",
+    "monto": 100,
+    "frecuencia": "bimestral",
+    "fechaInicio": "2026-10-25",
+    "fechaFin": null
+  },
+  {
+    "id": 25,
+    "concepto": "Mercado Semanal",
+    "categoria": "Alimentacion",
+    "tipo": "gasto",
+    "monto": 140,
+    "frecuencia": "semanal",
+    "fechaInicio": "2026-10-06",
+    "fechaFin": null
+  }
+]
