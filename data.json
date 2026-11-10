@@ -52,12 +52,12 @@
   {
     "id": 6,
     "concepto": "Seguro Dental",
-    "categoria": "Suscripción",
     "tipo": "gasto",
+    "categoria": "Suscripción",
     "monto": 18,
     "frecuencia": "mensual",
     "fechaInicio": "2026-10-01",
-    "fechaFin": null
+    "fechaFin": "2026-12-01"
   },
   {
     "id": 7,
