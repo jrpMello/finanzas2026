@@ -220,16 +220,6 @@
     "fechaFin": null
   },
   {
-    "id": 23,
-    "concepto": "Comedor Cole Enzo",
-    "categoria": "Niños",
-    "tipo": "gasto",
-    "monto": 90,
-    "frecuencia": "mensual",
-    "fechaInicio": "2026-10-05",
-    "fechaFin": "2027-01-31"
-  },
-  {
     "id": 24,
     "concepto": "Factura Gas",
     "categoria": "Vivienda",
