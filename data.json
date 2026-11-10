@@ -82,12 +82,12 @@
   {
     "id": 9,
     "concepto": "Tarjeta Plazo Mayra",
-    "categoria": "Deuda",
     "tipo": "gasto",
+    "categoria": "Deuda",
     "monto": 185,
     "frecuencia": "mensual",
     "fechaInicio": "2026-10-02",
-    "fechaFin": null
+    "fechaFin": "2029-06-02"
   },
   {
     "id": 10,
