@@ -222,11 +222,11 @@
   {
     "id": 24,
     "concepto": "Factura Gas",
-    "categoria": "Vivienda",
     "tipo": "gasto",
-    "monto": 100,
+    "categoria": "Vivienda",
+    "monto": 65,
     "frecuencia": "bimestral",
-    "fechaInicio": "2026-10-25",
+    "fechaInicio": "2026-11-20",
     "fechaFin": null
   },
   {
