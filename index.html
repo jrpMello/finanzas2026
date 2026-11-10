@@ -31,7 +31,7 @@
         body {
             background-color: var(--bg-primary);
             color: var(--text-main);
-            padding: 16px;
+            padding: 12px;
             max-width: 1400px;
             margin: 0 auto;
             overflow-x: hidden;
@@ -44,10 +44,14 @@
             align-items: flex-start;
             flex-wrap: wrap;
             gap: 12px;
+            background-color: var(--bg-secondary);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
         }
 
         h1 {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             color: var(--text-main);
         }
 
@@ -59,10 +63,22 @@
 
         .card {
             background-color: var(--bg-secondary);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 16px;
             border: 1px solid var(--border-color);
             overflow: hidden;
+        }
+
+        .section-title {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
         }
 
         .col-12 { grid-column: span 12; }
@@ -70,19 +86,29 @@
         .col-6 { grid-column: span 6; }
         .col-4 { grid-column: span 4; }
 
-        @media (max-width: 768px) {
-            .col-12, .col-8, .col-6, .col-4 { grid-column: span 12; }
-            body { padding: 10px; }
-            .card { padding: 12px; }
-            header { flex-direction: column; align-items: stretch; }
-            header > div:last-child { display: flex; gap: 8px; width: 100%; }
-            header > div:last-child button { flex: 1; }
+        @media (max-width: 1024px) {
+            .col-8, .col-6, .col-4 { grid-column: span 12; }
         }
 
         .summary-box {
             display: flex;
             flex-direction: column;
+            align-items: center;
+            text-align: center;
             gap: 6px;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, #26354a 100%);
+        }
+
+        .summary-box.col-6 {
+            grid-column: span 6;
+        }
+
+        .summary-box.col-12 {
+            grid-column: span 12;
+        }
+
+        @media (max-width: 768px) {
+            .summary-box.col-6 { grid-column: span 6; }
         }
 
         .summary-box .val {
@@ -101,11 +127,16 @@
             background-color: var(--accent-blue);
             color: white;
             border: none;
-            padding: 8px 14px;
-            border-radius: 4px;
+            padding: 10px 16px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
             font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
         }
 
         .btn:hover { opacity: 0.9; }
@@ -116,46 +147,96 @@
             width: 100%;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            margin-top: 4px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
-            min-width: 320px;
+            white-space: nowrap;
         }
 
         th, td {
             text-align: left;
-            padding: 8px 6px;
+            padding: 12px 10px;
             border-bottom: 1px solid var(--border-color);
             font-size: 0.85rem;
-            word-break: break-word;
         }
 
-        th { color: var(--text-muted); }
+        th { 
+            color: var(--text-muted); 
+            font-weight: 600;
+            background-color: rgba(15, 23, 42, 0.4);
+        }
+
+        /* Estilo específico para tarjetas móviles en Gestión Base */
+        .mobile-cards-container {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 8px; }
+            header { flex-direction: column; align-items: stretch; padding: 12px; }
+            header > div:last-child { display: flex; gap: 8px; width: 100%; }
+            header > div:last-child button { flex: 1; }
+            
+            #table-movimientos-container { display: none; }
+            .mobile-cards-container { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+            
+            .mov-card-item {
+                background-color: var(--bg-card);
+                border-radius: 8px;
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                border: 1px solid var(--border-color);
+            }
+            .mov-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-weight: bold;
+                font-size: 0.95rem;
+            }
+            .mov-card-body {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 4px 8px;
+                font-size: 0.8rem;
+                color: var(--text-muted);
+            }
+            .mov-card-footer {
+                display: flex;
+                justify-content: flex-end;
+                gap: 6px;
+                margin-top: 4px;
+                border-top: 1px solid var(--border-color);
+                padding-top: 8px;
+            }
+        }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 3px;
+            gap: 4px;
             margin-top: 10px;
         }
 
         .calendar-day-header {
             text-align: center;
             font-weight: bold;
-            padding: 6px 2px;
+            padding: 8px 2px;
             color: var(--text-muted);
             font-size: 0.75rem;
         }
 
         .calendar-day {
             background-color: var(--bg-card);
-            min-height: 75px;
-            padding: 4px;
-            border-radius: 4px;
-            font-size: 0.65rem;
+            min-height: 80px;
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 0.7rem;
             overflow: hidden;
             cursor: pointer;
             transition: transform 0.1s ease, border-color 0.1s ease;
@@ -163,8 +244,8 @@
         }
 
         @media (max-width: 768px) {
-            .calendar-day { min-height: 55px; padding: 2px; font-size: 0.6rem; }
-            .calendar-item { display: none; } /* En iPhone muestra puntos o indicador simplificado para no saturar */
+            .calendar-day { min-height: 60px; padding: 4px; font-size: 0.65rem; }
+            .calendar-item { display: none; }
             .calendar-day.has-events::after {
                 content: '';
                 display: block;
@@ -172,7 +253,7 @@
                 height: 6px;
                 background-color: var(--accent-blue);
                 border-radius: 50%;
-                margin: 2px auto 0 auto;
+                margin: 4px auto 0 auto;
             }
         }
 
@@ -192,9 +273,9 @@
         }
 
         .calendar-item {
-            padding: 1px 3px;
-            border-radius: 2px;
-            margin-bottom: 1px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin-bottom: 2px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -204,41 +285,42 @@
         .item-gasto { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             font-size: 0.85rem;
             color: var(--text-muted);
+            font-weight: 500;
         }
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            border-radius: 4px;
-            font-size: 1rem; /* Evita zoom automático en iOS al enfocar inputs */
+            border-radius: 6px;
+            font-size: 1rem;
         }
 
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.7);
+            background-color: rgba(0,0,0,0.75);
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            padding: 16px;
+            padding: 12px;
         }
 
         .modal-content {
             background-color: var(--bg-secondary);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             width: 100%;
             max-width: 500px;
             border: 1px solid var(--border-color);
@@ -248,35 +330,49 @@
 
         .actions-cell {
             display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
+            gap: 6px;
+            white-space: nowrap;
         }
 
         .actions-cell button {
-            padding: 4px 6px;
-            font-size: 0.7rem;
+            padding: 6px 10px;
+            font-size: 0.75rem;
+        }
+
+        .chart-layout {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .chart-container {
             position: relative;
             height: 220px;
-            width: 100%;
+            width: 220px;
+            flex-shrink: 0;
             display: flex;
             justify-content: center;
         }
 
+        @media (max-width: 480px) {
+            .chart-container { height: 180px; width: 180px; }
+        }
+
         .badge {
-            padding: 2px 5px;
+            padding: 3px 8px;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             background-color: var(--bg-card);
             white-space: nowrap;
+            display: inline-block;
         }
 
         .sync-status {
             font-size: 0.75rem;
             color: var(--accent-green);
-            margin-top: 2px;
+            margin-top: 4px;
         }
     </style>
 </head>
@@ -295,45 +391,53 @@
     </header>
 
     <div class="grid">
-        <!-- RESUMEN MENSUAL Y BALANCE (TOTAL DEL MES) -->
-        <div class="card col-4 summary-box">
-            <span>Ingresos del Mes</span>
+        <!-- SECCIÓN 1: RESUMEN MENSUAL GLOBAL -->
+        <div class="card col-12" style="background: transparent; border: none; padding: 0;">
+            <div class="section-title">Resumen del Mes (Total Global)</div>
+        </div>
+        <div class="card col-6 summary-box">
+            <span style="color: var(--text-muted);">Ingresos del Mes</span>
             <span class="val text-green" id="total-ingresos">0.00 €</span>
         </div>
-        <div class="card col-4 summary-box">
-            <span>Gastos del Mes</span>
+        <div class="card col-6 summary-box">
+            <span style="color: var(--text-muted);">Gastos del Mes</span>
             <span class="val text-red" id="total-gastos">0.00 €</span>
         </div>
-        <div class="card col-4 summary-box">
-            <span>Balance Previsto (Mes)</span>
+        <div class="card col-12 summary-box">
+            <span style="color: var(--text-muted);">Balance Previsto (Mes)</span>
             <span class="val text-blue" id="total-balance">0.00 €</span>
         </div>
 
-        <!-- RESUMEN PROGRESIVO / ACTUAL -->
-        <div class="card col-4 summary-box" style="border-color: var(--accent-purple);">
+        <!-- SECCIÓN 2: PROGRESIÓN DIARIA -->
+        <div class="card col-12" style="background: transparent; border: none; padding: 0; margin-top: 10px;">
+            <div class="section-title">Progresión Diaria (Desde Hoy)</div>
+        </div>
+        <div class="card col-6 summary-box" style="border-color: var(--accent-purple);">
             <span style="color: var(--text-muted);">Balance Actual (Hasta Hoy)</span>
             <span class="val" id="prog-balance-actual">0.00 €</span>
         </div>
-        <div class="card col-4 summary-box" style="border-color: var(--accent-purple);">
-            <span style="color: var(--text-muted);">Gastos (Desde Hoy al Fin de Mes)</span>
+        <div class="card col-6 summary-box" style="border-color: var(--accent-purple);">
+            <span style="color: var(--text-muted);">Gastos (Desde Hoy al Fin)</span>
             <span class="val text-red" id="prog-gastos">0.00 €</span>
         </div>
-        <div class="card col-4 summary-box" style="border-color: var(--accent-purple);">
-            <span style="color: var(--text-muted);">Balance (Desde Hoy al Fin de Mes)</span>
+        <div class="card col-12 summary-box" style="border-color: var(--accent-purple);">
+            <span style="color: var(--text-muted);">Balance (Desde Hoy al Fin)</span>
             <span class="val text-purple" id="prog-balance">0.00 €</span>
         </div>
 
         <!-- GRÁFICO POR CATEGORÍAS -->
         <div class="card col-6">
-            <h3>Distribución de Gastos</h3>
-            <div class="chart-container">
-                <canvas id="chart-categorias"></canvas>
+            <div class="section-title" style="border:none; margin-bottom:12px; padding:0;">Distribución de Gastos</div>
+            <div class="chart-layout">
+                <div class="chart-container">
+                    <canvas id="chart-categorias"></canvas>
+                </div>
             </div>
         </div>
 
         <!-- CONTROL DE DEUDAS Y FINANCIACIONES -->
         <div class="card col-6">
-            <h3>Deudas y Fraccionamientos</h3>
+            <div class="section-title" style="border:none; margin-bottom:4px; padding:0;">Deudas Pendientes</div>
             <div class="table-responsive">
                 <table id="table-deudas">
                     <thead>
@@ -352,8 +456,8 @@
 
         <!-- PRÓXIMOS MOVIMIENTOS -->
         <div class="card col-6">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
-                <h3 id="title-hoy">Próximos (Hoy)</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 8px;">
+                <h3 id="title-hoy" style="font-size: 1rem;">Próximos (Hoy)</h3>
                 <span id="total-hoy-gastos" class="text-red" style="font-weight: bold; font-size: 0.85rem;"></span>
             </div>
             <div class="table-responsive">
@@ -367,8 +471,8 @@
         </div>
 
         <div class="card col-6">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
-                <h3 id="title-semana">Próximos (Esta Semana)</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 8px;">
+                <h3 id="title-semana" style="font-size: 1rem;">Próximos (Esta Semana)</h3>
                 <span id="total-semana-gastos" class="text-red" style="font-weight: bold; font-size: 0.85rem;"></span>
             </div>
             <div class="table-responsive">
@@ -386,7 +490,7 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
                 <h3 id="cal-month-year" style="font-size: 1.1rem;">Calendario</h3>
                 <div style="display: flex; gap: 4px;">
-                    <button class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;" onclick="goToday()">Hoy</button>
+                    <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="goToday()">Hoy</button>
                     <button class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;" onclick="changeMonth(-1)">&lt;</button>
                     <button class="btn btn-secondary" style="padding: 6px 10px; font-size: 0.8rem;" onclick="changeMonth(1)">&gt;</button>
                 </div>
@@ -405,8 +509,10 @@
 
         <!-- LISTA GENERAL DE MOVIMIENTOS -->
         <div class="card col-12">
-            <h3>Gestión de Movimientos Base</h3>
-            <div class="table-responsive">
+            <div class="section-title">Gestión de Movimientos Base</div>
+            
+            <!-- Vista Tabla para Escritorio / Tablets -->
+            <div class="table-responsive" id="table-movimientos-container">
                 <table id="table-movimientos">
                     <thead>
                         <tr>
@@ -423,6 +529,9 @@
                     <tbody></tbody>
                 </table>
             </div>
+
+            <!-- Vista Tarjetas adaptada exclusivamente para iPhone / Móviles -->
+            <div class="mobile-cards-container" id="mobile-movimientos-cards"></div>
         </div>
     </div>
 
@@ -520,7 +629,7 @@
     <!-- MODAL ZOOM DÍA CALENDARIO -->
     <div class="modal" id="modal-day-zoom">
         <div class="modal-content">
-            <h3 id="zoom-date-title" style="margin-bottom: 16px; font-size: 1.1rem;">Detalles del Día</h3>
+            <h3 id="zoom-date-title" style="margin-bottom: 16px; font-size: 1.05rem;">Detalles del Día</h3>
             <div class="table-responsive">
                 <table id="table-day-zoom">
                     <thead>
@@ -785,7 +894,15 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'bottom', labels: { color: '#f8fafc', font: { size: 9 } } },
+                        legend: { 
+                            position: 'right', 
+                            labels: { 
+                                color: '#f8fafc', 
+                                font: { size: 10 },
+                                boxWidth: 12,
+                                padding: 8
+                            } 
+                        },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
@@ -893,9 +1010,16 @@
         }
 
         function renderTables() {
+            // Render Tabla Desktop
             const tbody = document.querySelector('#table-movimientos tbody');
             tbody.innerHTML = '';
+            
+            // Render Tarjetas Móvil
+            const mobileContainer = document.getElementById('mobile-movimientos-cards');
+            mobileContainer.innerHTML = '';
+
             movimientos.forEach(m => {
+                // Fila tabla escritorio
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${m.concepto}</td>
@@ -906,12 +1030,34 @@
                     <td>${m.fechaInicio}</td>
                     <td>${m.fechaFin || 'N/A'}</td>
                     <td class="actions-cell">
-                        <button class="btn btn-secondary" onclick="editMovimiento(${m.id})">Edit</button>
-                        <button class="btn btn-secondary" onclick="duplicateMovimiento(${m.id})">Dup</button>
+                        <button class="btn btn-secondary" onclick="editMovimiento(${m.id})">Editar</button>
+                        <button class="btn btn-secondary" onclick="duplicateMovimiento(${m.id})">Duplicar</button>
                         <button class="btn btn-danger" onclick="deleteMovimiento(${m.id})">X</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
+
+                // Tarjeta móvil adaptada y limpia
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'mov-card-item';
+                cardDiv.innerHTML = `
+                    <div class="mov-card-header">
+                        <span>${m.concepto}</span>
+                        <span class="${m.tipo === 'ingreso' ? 'text-green' : 'text-red'}" style="font-size: 1rem;">${m.monto} €</span>
+                    </div>
+                    <div class="mov-card-body">
+                        <div>Tipo: <strong>${m.tipo.toUpperCase()}</strong></div>
+                        <div>Cat: <span class="badge">${m.categoria}</span></div>
+                        <div>Freq: <strong>${m.frecuencia}</strong></div>
+                        <div>Inicio: <strong>${m.fechaInicio}</strong></div>
+                    </div>
+                    <div class="mov-card-footer">
+                        <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="editMovimiento(${m.id})">Editar</button>
+                        <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="duplicateMovimiento(${m.id})">Duplicar</button>
+                        <button class="btn btn-danger" style="padding:4px 10px; font-size:0.75rem;" onclick="deleteMovimiento(${m.id})">Eliminar</button>
+                    </div>
+                `;
+                mobileContainer.appendChild(cardDiv);
             });
 
             // Próximos Movimientos Hoy
@@ -1064,14 +1210,14 @@
         }
 
         function openZoomModal(dateObj, events) {
-            document.getElementById('zoom-date-title').innerText = `Movimientos del ${dateObj.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}`;
+            document.getElementById('zoom-date-title').innerText = `Movimientos del ${dateObj.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })}`;
             const tbody = document.querySelector('#table-day-zoom tbody');
             tbody.innerHTML = '';
 
             let totalZoomGastos = 0;
 
             if (events.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="color:var(--text-muted)">No hay movimientos registrados para este día.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="color:var(--text-muted)">No hay movimientos registrados.</td></tr>';
             } else {
                 events.forEach(e => {
                     if (e.tipo === 'gasto') {
