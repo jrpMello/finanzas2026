@@ -102,12 +102,12 @@
   {
     "id": 11,
     "concepto": "Juzgado",
-    "categoria": "Deuda",
     "tipo": "gasto",
+    "categoria": "Deuda",
     "monto": 53,
     "frecuencia": "mensual",
     "fechaInicio": "2026-10-03",
-    "fechaFin": null
+    "fechaFin": "2028-04-03"
   },
   {
     "id": 12,
