@@ -72,12 +72,12 @@
   {
     "id": 8,
     "concepto": "Cofidis Muebles/Préstamo",
-    "categoria": "Deuda",
     "tipo": "gasto",
+    "categoria": "Deuda",
     "monto": 139,
     "frecuencia": "mensual",
     "fechaInicio": "2026-10-02",
-    "fechaFin": null
+    "fechaFin": "2027-09-02"
   },
   {
     "id": 9,
