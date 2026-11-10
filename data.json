@@ -238,5 +238,15 @@
     "frecuencia": "semanal",
     "fechaInicio": "2026-10-06",
     "fechaFin": null
+  },
+  {
+    "id": 1794306888510,
+    "concepto": "Arbol y Adornos Navidad",
+    "tipo": "gasto",
+    "categoria": "Ocio",
+    "monto": 160,
+    "frecuencia": "puntual",
+    "fechaInicio": "2026-11-07",
+    "fechaFin": null
   }
 ]
