@@ -298,5 +298,15 @@
     "frecuencia": "puntual",
     "fechaInicio": "2026-11-03",
     "fechaFin": null
+  },
+  {
+    "id": 1794309892187,
+    "concepto": "Amazon Paga 4X Cofidis",
+    "tipo": "gasto",
+    "categoria": "Deuda",
+    "monto": 98.35,
+    "frecuencia": "mensual",
+    "fechaInicio": "2026-11-10",
+    "fechaFin": "2027-01-10"
   }
 ]
