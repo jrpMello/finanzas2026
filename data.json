@@ -278,5 +278,15 @@
     "frecuencia": "puntual",
     "fechaInicio": "2026-11-08",
     "fechaFin": null
+  },
+  {
+    "id": 1794307036258,
+    "concepto": "Dominos Pizza",
+    "tipo": "gasto",
+    "categoria": "Ocio",
+    "monto": 32,
+    "frecuencia": "puntual",
+    "fechaInicio": "2026-11-08",
+    "fechaFin": null
   }
 ]
