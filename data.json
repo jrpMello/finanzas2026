@@ -152,12 +152,12 @@
   {
     "id": 16,
     "concepto": "Coche",
-    "categoria": "Deuda",
     "tipo": "gasto",
+    "categoria": "Deuda",
     "monto": 203,
     "frecuencia": "mensual",
     "fechaInicio": "2026-10-10",
-    "fechaFin": null
+    "fechaFin": "2028-06-10"
   },
   {
     "id": 17,
