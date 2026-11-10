@@ -42,9 +42,9 @@
   {
     "id": 5,
     "concepto": "Tarjeta Revolut",
-    "categoria": "Deuda",
     "tipo": "gasto",
-    "monto": 100,
+    "categoria": "Deuda",
+    "monto": 90,
     "frecuencia": "mensual",
     "fechaInicio": "2026-10-01",
     "fechaFin": null
