@@ -92,12 +92,12 @@
   {
     "id": 10,
     "concepto": "Tarjeta Plazo Ricardo",
-    "categoria": "Deuda",
     "tipo": "gasto",
+    "categoria": "Deuda",
     "monto": 185,
     "frecuencia": "mensual",
     "fechaInicio": "2026-10-02",
-    "fechaFin": null
+    "fechaFin": "2029-03-02"
   },
   {
     "id": 11,
