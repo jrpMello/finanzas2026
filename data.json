@@ -268,5 +268,15 @@
     "frecuencia": "puntual",
     "fechaInicio": "2026-11-07",
     "fechaFin": null
+  },
+  {
+    "id": 1794307015259,
+    "concepto": "Fruteria Brasil Flor de Liz",
+    "tipo": "gasto",
+    "categoria": "Ocio",
+    "monto": 76,
+    "frecuencia": "puntual",
+    "fechaInicio": "2026-11-08",
+    "fechaFin": null
   }
 ]
