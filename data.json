@@ -248,5 +248,15 @@
     "frecuencia": "puntual",
     "fechaInicio": "2026-11-07",
     "fechaFin": null
+  },
+  {
+    "id": 1794306952742,
+    "concepto": "Restaurante Sushi",
+    "tipo": "gasto",
+    "categoria": "Ocio",
+    "monto": 100,
+    "frecuencia": "puntual",
+    "fechaInicio": "2026-11-01",
+    "fechaFin": null
   }
 ]
