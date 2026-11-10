@@ -22,12 +22,12 @@
   {
     "id": 3,
     "concepto": "Tarjeta Caixabank",
-    "categoria": "Deuda",
     "tipo": "gasto",
+    "categoria": "Deuda",
     "monto": 20,
     "frecuencia": "mensual",
     "fechaInicio": "2026-10-01",
-    "fechaFin": null
+    "fechaFin": "0028-10-01"
   },
   {
     "id": 4,
