@@ -288,5 +288,15 @@
     "frecuencia": "puntual",
     "fechaInicio": "2026-11-08",
     "fechaFin": null
+  },
+  {
+    "id": 1794307266341,
+    "concepto": "Diversos Gastos",
+    "tipo": "gasto",
+    "categoria": "Imprevisto",
+    "monto": 140,
+    "frecuencia": "puntual",
+    "fechaInicio": "2026-11-03",
+    "fechaFin": null
   }
 ]
