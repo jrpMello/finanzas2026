@@ -172,11 +172,11 @@
   {
     "id": 18,
     "concepto": "Gasolina",
-    "categoria": "Combustible",
     "tipo": "gasto",
+    "categoria": "Combustible",
     "monto": 60,
     "frecuencia": "mensual",
-    "fechaInicio": "2026-10-20",
+    "fechaInicio": "2026-10-10",
     "fechaFin": null
   },
   {
