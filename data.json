@@ -34,10 +34,10 @@
     "concepto": "Tarjeta Santander",
     "tipo": "gasto",
     "categoria": "Deuda",
-    "monto": 90,
+    "monto": 50,
     "frecuencia": "mensual",
     "fechaInicio": "2026-10-01",
-    "fechaFin": null
+    "fechaFin": "2028-07-01"
   },
   {
     "id": 5,
