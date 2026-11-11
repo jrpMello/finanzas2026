@@ -374,6 +374,30 @@
             color: var(--accent-green);
             margin-top: 4px;
         }
+
+        /* Estilos para el filtro y sección colapsable de Gestión Base */
+        .filter-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            background-color: var(--bg-card);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-container .form-group {
+            margin-bottom: 0;
+        }
+
+        .filter-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
@@ -437,7 +461,10 @@
 
         <!-- CONTROL DE DEUDAS Y FINANCIACIONES -->
         <div class="card col-6">
-            <div class="section-title" style="border:none; margin-bottom:4px; padding:0;">Deudas Pendientes</div>
+            <div class="section-title" style="border:none; margin-bottom:4px; padding:0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <span>Deudas Pendientes</span>
+                <span id="deudas-header-totals" style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);"></span>
+            </div>
             <div class="table-responsive">
                 <table id="table-deudas">
                     <thead>
@@ -509,29 +536,76 @@
 
         <!-- LISTA GENERAL DE MOVIMIENTOS -->
         <div class="card col-12">
-            <div class="section-title">Gestión de Movimientos Base</div>
-            
-            <!-- Vista Tabla para Escritorio / Tablets -->
-            <div class="table-responsive" id="table-movimientos-container">
-                <table id="table-movimientos">
-                    <thead>
-                        <tr>
-                            <th>Concepto</th>
-                            <th>Categoría</th>
-                            <th>Tipo</th>
-                            <th>Monto</th>
-                            <th>Frecuencia</th>
-                            <th>Inicio</th>
-                            <th>Fin</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <div class="section-title" style="cursor: pointer; justify-content: space-between; align-items: center;" onclick="toggleBaseManagement()">
+                <span>Gestión de Movimientos Base</span>
+                <span id="toggle-icon" style="font-size: 1.1rem; font-weight: bold;">▼</span>
             </div>
+            
+            <div id="base-management-content" style="display: none;">
+                <!-- FILTRO AVANZADO -->
+                <div class="filter-container">
+                    <div class="form-group">
+                        <label>Nombre / Concepto</label>
+                        <input type="text" id="filter-nombre" placeholder="Buscar..." oninput="applyFilters()">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="filter-categoria" onchange="applyFilters()">
+                            <option value="">Todas</option>
+                            <option value="Deuda">Deuda</option>
+                            <option value="Suscripción">Suscripción</option>
+                            <option value="Vivienda">Vivienda</option>
+                            <option value="Combustible">Combustible</option>
+                            <option value="Alimentacion">Alimentacion</option>
+                            <option value="Niños">Niños</option>
+                            <option value="Ocio">Ocio</option>
+                            <option value="Imprevisto">Imprevisto</option>
+                            <option value="Ingreso">Ingreso</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Monto Mín (€)</label>
+                        <input type="number" step="0.01" id="filter-min-monto" placeholder="Mín" oninput="applyFilters()">
+                    </div>
+                    <div class="form-group">
+                        <label>Monto Máx (€)</label>
+                        <input type="number" step="0.01" id="filter-max-monto" placeholder="Máx" oninput="applyFilters()">
+                    </div>
+                    <div class="form-group">
+                        <label>Desde (Inicio)</label>
+                        <input type="date" id="filter-fecha-desde" onchange="applyFilters()">
+                    </div>
+                    <div class="form-group">
+                        <label>Hasta (Inicio)</label>
+                        <input type="date" id="filter-fecha-hasta" onchange="applyFilters()">
+                    </div>
+                    <div class="filter-actions">
+                        <button type="button" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="clearFilters()">Limpiar Filtro</button>
+                    </div>
+                </div>
 
-            <!-- Vista Tarjetas adaptada exclusivamente para iPhone / Móviles -->
-            <div class="mobile-cards-container" id="mobile-movimientos-cards"></div>
+                <!-- Vista Tabla para Escritorio / Tablets -->
+                <div class="table-responsive" id="table-movimientos-container">
+                    <table id="table-movimientos">
+                        <thead>
+                            <tr>
+                                <th>Concepto</th>
+                                <th>Categoría</th>
+                                <th>Tipo</th>
+                                <th>Monto</th>
+                                <th>Frecuencia</th>
+                                <th>Inicio</th>
+                                <th>Fin</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <!-- Vista Tarjetas adaptada exclusivamente para iPhone / Móviles -->
+                <div class="mobile-cards-container" id="mobile-movimientos-cards"></div>
+            </div>
         </div>
     </div>
 
@@ -612,11 +686,11 @@
                 </div>
                 <div class="form-group">
                     <label>Fecha de Inicio / Día del mes</label>
-                    <input type="date" id="mov-fecha-inicio" required>
+                    <input type="date" id="mov-fecha-inicio" lang="es-ES" required>
                 </div>
                 <div class="form-group">
                     <label>Fecha Fin (Especial para calcular deudas restantes)</label>
-                    <input type="date" id="mov-fecha-fin">
+                    <input type="date" id="mov-fecha-fin" lang="es-ES">
                 </div>
                 <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px;">
                     <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
@@ -639,7 +713,8 @@
                 </table>
             </div>
             <div id="zoom-total-gastos" style="margin-top: 14px; font-weight: bold; text-align: right; font-size: 0.95rem;"></div>
-            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+            <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <button type="button" class="btn" id="zoom-btn-nuevo" onclick="">+ Nuevo en este día</button>
                 <button type="button" class="btn btn-secondary" onclick="closeZoomModal()">Cerrar</button>
             </div>
         </div>
@@ -681,6 +756,15 @@
         let todayDate = new Date();
         let currentDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1);
         let myChart = null;
+
+        function formatDateToES(dateStr) {
+            if (!dateStr) return 'N/A';
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return dateStr;
+        }
 
         async function initApp() {
             todayDate = new Date();
@@ -971,10 +1055,17 @@
 
             if (deudas.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" style="color:var(--text-muted)">No hay deudas configuradas.</td></tr>';
+                document.getElementById('deudas-header-totals').innerText = '';
                 return;
             }
 
+            let sumCuotasMes = 0;
+            let sumTotalDeudas = 0;
+            let hasIndefiniteTotal = false;
+
             deudas.forEach(d => {
+                sumCuotasMes += d.monto;
+
                 let cuotasRestantes = "Indef.";
                 let totalPendiente = "Indef.";
 
@@ -990,77 +1081,128 @@
                             temp.setDate(temp.getDate() + 1);
                         }
                         cuotasRestantes = count;
-                        totalPendiente = (count * d.monto).toFixed(2) + ' €';
+                        const subTotal = count * d.monto;
+                        totalPendiente = subTotal.toFixed(2) + ' €';
+                        sumTotalDeudas += subTotal;
                     } else {
                         cuotasRestantes = 0;
                         totalPendiente = '0.00 €';
                     }
+                } else {
+                    hasIndefiniteTotal = true;
                 }
 
                 tbody.innerHTML += `
                     <tr>
                         <td><strong>${d.concepto}</strong></td>
                         <td>${d.monto} €</td>
-                        <td>${d.fechaFin || 'N/A'}</td>
+                        <td>${formatDateToES(d.fechaFin)}</td>
                         <td>${cuotasRestantes}</td>
                         <td class="text-amber"><strong>${totalPendiente}</strong></td>
                     </tr>
                 `;
             });
+
+            const headerTotalsText = `Cuotas Mes: ${sumCuotasMes.toFixed(2)} € | Total Pendiente: ${hasIndefiniteTotal ? '>' : ''}${sumTotalDeudas.toFixed(2)} €`;
+            document.getElementById('deudas-header-totals').innerText = headerTotalsText;
+        }
+
+        function toggleBaseManagement() {
+            const content = document.getElementById('base-management-content');
+            const icon = document.getElementById('toggle-icon');
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.innerText = '▲';
+            } else {
+                content.style.display = 'none';
+                icon.innerText = '▼';
+            }
+        }
+
+        function applyFilters() {
+            renderTables();
+        }
+
+        function clearFilters() {
+            document.getElementById('filter-nombre').value = '';
+            document.getElementById('filter-categoria').value = '';
+            document.getElementById('filter-min-monto').value = '';
+            document.getElementById('filter-max-monto').value = '';
+            document.getElementById('filter-fecha-desde').value = '';
+            document.getElementById('filter-fecha-hasta').value = '';
+            renderTables();
         }
 
         function renderTables() {
-            // Render Tabla Desktop
             const tbody = document.querySelector('#table-movimientos tbody');
             tbody.innerHTML = '';
             
-            // Render Tarjetas Móvil
             const mobileContainer = document.getElementById('mobile-movimientos-cards');
             mobileContainer.innerHTML = '';
 
-            movimientos.forEach(m => {
-                // Fila tabla escritorio
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${m.concepto}</td>
-                    <td><span class="badge">${m.categoria}</span></td>
-                    <td><span class="${m.tipo === 'ingreso' ? 'text-green' : 'text-red'}">${m.tipo.toUpperCase()}</span></td>
-                    <td>${m.monto} €</td>
-                    <td>${m.frecuencia}</td>
-                    <td>${m.fechaInicio}</td>
-                    <td>${m.fechaFin || 'N/A'}</td>
-                    <td class="actions-cell">
-                        <button class="btn btn-secondary" onclick="editMovimiento(${m.id})">Editar</button>
-                        <button class="btn btn-secondary" onclick="duplicateMovimiento(${m.id})">Duplicar</button>
-                        <button class="btn btn-danger" onclick="deleteMovimiento(${m.id})">X</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
+            // Obtener valores de los filtros
+            const fNombre = document.getElementById('filter-nombre').value.toLowerCase().trim();
+            const fCat = document.getElementById('filter-categoria').value;
+            const fMinMonto = parseFloat(document.getElementById('filter-min-monto').value);
+            const fMaxMonto = parseFloat(document.getElementById('filter-max-monto').value);
+            const fFechaDesde = document.getElementById('filter-fecha-desde').value;
+            const fFechaHasta = document.getElementById('filter-fecha-hasta').value;
 
-                // Tarjeta móvil adaptada y limpia
-                const cardDiv = document.createElement('div');
-                cardDiv.className = 'mov-card-item';
-                cardDiv.innerHTML = `
-                    <div class="mov-card-header">
-                        <span>${m.concepto}</span>
-                        <span class="${m.tipo === 'ingreso' ? 'text-green' : 'text-red'}" style="font-size: 1rem;">${m.monto} €</span>
-                    </div>
-                    <div class="mov-card-body">
-                        <div>Tipo: <strong>${m.tipo.toUpperCase()}</strong></div>
-                        <div>Cat: <span class="badge">${m.categoria}</span></div>
-                        <div>Freq: <strong>${m.frecuencia}</strong></div>
-                        <div>Inicio: <strong>${m.fechaInicio}</strong></div>
-                    </div>
-                    <div class="mov-card-footer">
-                        <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="editMovimiento(${m.id})">Editar</button>
-                        <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="duplicateMovimiento(${m.id})">Duplicar</button>
-                        <button class="btn btn-danger" style="padding:4px 10px; font-size:0.75rem;" onclick="deleteMovimiento(${m.id})">Eliminar</button>
-                    </div>
-                `;
-                mobileContainer.appendChild(cardDiv);
+            const filteredMovimientos = movimientos.filter(m => {
+                if (fNombre && !m.concepto.toLowerCase().includes(fNombre)) return false;
+                if (fCat && m.categoria !== fCat) return false;
+                if (!isNaN(fMinMonto) && m.monto < fMinMonto) return false;
+                if (!isNaN(fMaxMonto) && m.monto > fMaxMonto) return false;
+                if (fFechaDesde && m.fechaInicio < fFechaDesde) return false;
+                if (fFechaHasta && m.fechaInicio > fFechaHasta) return false;
+                return true;
             });
 
-            // Próximos Movimientos Hoy
+            if (filteredMovimientos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="color:var(--text-muted); text-align:center;">No se encontraron movimientos con los filtros aplicados.</td></tr>';
+                mobileContainer.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding: 12px;">No se encontraron movimientos con los filtros aplicados.</div>';
+            } else {
+                filteredMovimientos.forEach(m => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${m.concepto}</td>
+                        <td><span class="badge">${m.categoria}</span></td>
+                        <td><span class="${m.tipo === 'ingreso' ? 'text-green' : 'text-red'}">${m.tipo.toUpperCase()}</span></td>
+                        <td>${m.monto} €</td>
+                        <td>${m.frecuencia}</td>
+                        <td>${formatDateToES(m.fechaInicio)}</td>
+                        <td>${formatDateToES(m.fechaFin)}</td>
+                        <td class="actions-cell">
+                            <button class="btn btn-secondary" onclick="editMovimiento(${m.id})">Editar</button>
+                            <button class="btn btn-secondary" onclick="duplicateMovimiento(${m.id})">Duplicar</button>
+                            <button class="btn btn-danger" onclick="deleteMovimiento(${m.id})">X</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = 'mov-card-item';
+                    cardDiv.innerHTML = `
+                        <div class="mov-card-header">
+                            <span>${m.concepto}</span>
+                            <span class="${m.tipo === 'ingreso' ? 'text-green' : 'text-red'}" style="font-size: 1rem;">${m.monto} €</span>
+                        </div>
+                        <div class="mov-card-body">
+                            <div>Tipo: <strong>${m.tipo.toUpperCase()}</strong></div>
+                            <div>Cat: <span class="badge">${m.categoria}</span></div>
+                            <div>Freq: <strong>${m.frecuencia}</strong></div>
+                            <div>Inicio: <strong>${formatDateToES(m.fechaInicio)}</strong></div>
+                        </div>
+                        <div class="mov-card-footer">
+                            <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="editMovimiento(${m.id})">Editar</button>
+                            <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.75rem;" onclick="duplicateMovimiento(${m.id})">Duplicar</button>
+                            <button class="btn btn-danger" style="padding:4px 10px; font-size:0.75rem;" onclick="deleteMovimiento(${m.id})">Eliminar</button>
+                        </div>
+                    `;
+                    mobileContainer.appendChild(cardDiv);
+                });
+            }
+
             const hoyBody = document.querySelector('#table-hoy tbody');
             hoyBody.innerHTML = '';
             const hoyEvents = getEventsForDate(todayDate);
@@ -1078,7 +1220,6 @@
             }
             document.getElementById('total-hoy-gastos').innerText = totalHoyGastos > 0 ? `Gastos: ${totalHoyGastos.toFixed(2)} €` : '';
 
-            // Próximos Movimientos Semana
             const semanaBody = document.querySelector('#table-semana tbody');
             semanaBody.innerHTML = '';
             let totalSemanaGastos = 0;
@@ -1103,11 +1244,14 @@
             document.getElementById('total-semana-gastos').innerText = totalSemanaGastos > 0 ? `Gastos: ${totalSemanaGastos.toFixed(2)} €` : '';
         }
 
-        function openModal(editMode = false) {
+        function openModal(editMode = false, preselectedDate = null) {
             if(!editMode) {
                 document.getElementById('form-movimiento').reset();
                 document.getElementById('mov-id').value = '';
                 document.getElementById('modal-title').innerText = 'Nuevo Movimiento';
+                if (preselectedDate) {
+                    document.getElementById('mov-fecha-inicio').value = preselectedDate;
+                }
             }
             document.getElementById('modal-form').style.display = 'flex';
         }
@@ -1240,6 +1384,17 @@
             } else {
                 totalGastosEl.innerHTML = '';
             }
+
+            const yearStr = dateObj.getFullYear();
+            const monthStr = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const dayStr = String(dateObj.getDate()).padStart(2, '0');
+            const formattedDate = `${yearStr}-${monthStr}-${dayStr}`;
+
+            const btnNuevo = document.getElementById('zoom-btn-nuevo');
+            btnNuevo.onclick = () => {
+                closeZoomModal();
+                openModal(false, formattedDate);
+            };
 
             document.getElementById('modal-day-zoom').style.display = 'flex';
         }
