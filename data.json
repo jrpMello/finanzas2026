@@ -318,5 +318,15 @@
     "frecuencia": "puntual",
     "fechaInicio": "2026-11-14",
     "fechaFin": null
+  },
+  {
+    "id": 1794853318431,
+    "concepto": "Compra Mercadona",
+    "tipo": "gasto",
+    "categoria": "Alimentacion",
+    "monto": 81,
+    "frecuencia": "puntual",
+    "fechaInicio": "2026-11-14",
+    "fechaFin": null
   }
 ]
