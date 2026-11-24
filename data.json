@@ -341,12 +341,12 @@
   },
   {
     "id": 1795542951725,
-    "concepto": "Diversos Gastos (Copia)",
+    "concepto": "Diversos Gastos",
     "tipo": "gasto",
     "categoria": "Imprevisto",
-    "monto": 140,
+    "monto": 60,
     "frecuencia": "puntual",
-    "fechaInicio": "2026-11-03",
+    "fechaInicio": "2026-11-23",
     "fechaFin": null
   }
 ]
