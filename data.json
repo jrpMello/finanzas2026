@@ -328,5 +328,15 @@
     "frecuencia": "puntual",
     "fechaInicio": "2026-11-14",
     "fechaFin": null
+  },
+  {
+    "id": 1795488445119,
+    "concepto": "Comida",
+    "tipo": "gasto",
+    "categoria": "Ocio",
+    "monto": 100,
+    "frecuencia": "puntual",
+    "fechaInicio": "2026-11-22",
+    "fechaFin": null
   }
 ]
