@@ -348,5 +348,15 @@
     "frecuencia": "puntual",
     "fechaInicio": "2026-11-23",
     "fechaFin": null
+  },
+  {
+    "id": 1795619932826,
+    "concepto": "Amazon",
+    "tipo": "gasto",
+    "categoria": "Ocio",
+    "monto": 30,
+    "frecuencia": "puntual",
+    "fechaInicio": "2026-11-24",
+    "fechaFin": null
   }
 ]
